@@ -62,6 +62,10 @@ std::vector<double> replaceZeros(std::vector<double> vec, double replacement) {
 }
 
 double binary_cross_entropy(std::vector<double> y, std::vector<double> y_pred) {
+    // Remove zeros from arrays to avoid log(0) call.
+    y = replaceZeros(y, 1.0/pow(10, 100));
+    y_pred = replaceZeros(y_pred, 1.0/pow(10, 100));
+
     if (y.size() != y_pred.size()) {
         throw std::invalid_argument("Error: Truth value and predicted value vectors should be the same size.");
     }
@@ -71,23 +75,6 @@ double binary_cross_entropy(std::vector<double> y, std::vector<double> y_pred) {
     for (int i = 0; i<y.size(); i++) {
         result -= y[i] * log2(y_pred[i]);
     }
-
-    return result;
-}
-
-double cross_entropy(std::vector<double> p, std::vector<double> q) {
-    // Remove zeros from arrays to avoid log(0) call.
-    p = replaceZeros(p, 1.0/pow(10, 100));
-    q = replaceZeros(q, 1.0/pow(10, 100));
-
-    std::vector<double> logSum(p.size());
-    double result = 0;
-
-    // Calculate logs
-    transform(p.begin(), p.end(), q.begin(), logSum.begin(), [](auto p, auto q) {return p * log2(q);});
-
-    // Sum logs and negate
-    result = -std::accumulate(logSum.begin(), logSum.end(), 0);
 
     return result;
 }

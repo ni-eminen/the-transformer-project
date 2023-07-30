@@ -1,3 +1,3 @@
 run:
-	g++ ./main.cpp
-	./a.out
+	g++ ./main.cpp -o ./build/a.out
+	./build/a.out
