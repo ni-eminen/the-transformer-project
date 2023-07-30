@@ -15,16 +15,17 @@ class Neuron {
     std::vector<double> weights;
     double activation_function(double x);
     double combination_function(std::vector<double> weights, std::vector<double> inputs);
-    double receive(std::vector<double> inputs);
+    double predict(std::vector<double> inputs);
     Neuron(double bias, std::vector<double> initial_weights) {
         this->weights = initial_weights;
         this->bias = bias;
     }
 };
 
-double Neuron::receive(std::vector<double> inputs) {
+double Neuron::predict(std::vector<double> inputs) {
     double weighted_sum = this->combination_function(inputs, this->weights);
-    double pred = std::round(this->activation_function(weighted_sum));
+    double activation_output = this->activation_function(weighted_sum);
+    double pred = std::round(activation_output);
 
     return pred;
 }
