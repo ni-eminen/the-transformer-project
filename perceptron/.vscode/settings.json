@@ -1,0 +1,6 @@
+{
+  "files.associations": {
+    "*.heex": "html",
+    "cmath": "cpp"
+  }
+}
