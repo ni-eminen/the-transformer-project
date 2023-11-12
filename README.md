@@ -1,8 +1,15 @@
-# The Transformer Project
-This project consists of three parts:
-1. The Perceptron
-	- Just a perceptron, a single neuron capable of binary classification. This gives me a basis in understanding how feedforward neural networks work, weights, activation functions, loss functions, bias terms, backpropagation all implemented from scratch.
-2. A multi-layer feedforward neural network (FNN) 
-	- This gives me an idea of how larger neural networks work, how backpropagation is implmented in a larger network.
-3. A Transformer 
-	- This part will be a minimal implementation of a transformer from scratch based on Attention Is All You Need.
+## Project Components
+
+### 1. The Perceptron
+   - Just a perceptron, a single neuron capable of binary classification.
+   - Provides a foundational understanding of feedforward neural networks.
+   - Implementation includes weights, activation functions, loss functions, bias terms, and backpropagation—all from scratch.
+
+### 2. A Multi-Layer Feedforward Neural Network (FNN)
+   - Explores the workings of larger neural networks.
+   - Focuses on the implementation of backpropagation within a broader network context.
+
+### 3. A Transformer
+   - Minimal implementation based on "Attention Is All You Need."
+   - A hands-on approach to understanding attention mechanisms and transformer structures from the ground up.
+
