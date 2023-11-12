@@ -11,15 +11,30 @@
 
 class Neuron {
   public:
+    double learning_rate;
     double bias;
     std::vector<double> weights;
     double activation_function(double x);
     double combination_function(std::vector<double> weights, std::vector<double> inputs);
     double predict(std::vector<double> inputs);
-    Neuron(double bias, std::vector<double> initial_weights) {
+    double loss_function(std::vector<double> y, std::vector<double> y_pred);
+    double forward_propagate(std::vector<double> x);
+    std::vector<double> train(std::vector<double> x);
+    Neuron(double bias, double learning_rate, std::vector<double> initial_weights) {
         this->weights = initial_weights;
         this->bias = bias;
+        this->learning_rate = learning_rate;
     }
+
+
+    std::vector<double> Neuron::train(std::vector<double> x) {
+        double E_total = Neuron::forward_propagate(x);
+
+        // now we must figure out for each weight, how much the weight contributed to the E_total
+        for 
+    }
+
+
 };
 
 double Neuron::predict(std::vector<double> inputs) {
@@ -42,6 +57,10 @@ double weighted_sum(std::vector<double> weights, std::vector<double> inputs) {
 
 double sigmoid(double x) {
     return 1 / (1 + exp(-x));
+}
+
+double d_sigmoid(double x) {
+    return sigmoid(x) * (1 - sigmoid(x));
 }
 
 double Neuron::combination_function(std::vector<double> weights, std::vector<double> inputs) {
@@ -80,13 +99,22 @@ double binary_cross_entropy(std::vector<double> y, std::vector<double> y_pred) {
     return result;
 }
 
+double Neuron::loss_function(std::vector<double> y, std::vector<double> y_pred) {
+    return binary_cross_entropy(y, y_pred);
+}
+
+
+
 int main(int argc, char *argv[])
 {
-    Neuron n = Neuron(2, std::vector<double>{0.5, 0.5, 0.5, 0.5 }); 
+    Neuron n = Neuron(2, 0.1, std::vector<double>{0.5, 0.5, 0.5, 0.5 }); 
 
-    double a = binary_cross_entropy(std::vector<double>{1, 0}, std::vector<double>{0.4, 0.6});
+    double a = binary_cross_entropy(std::vector<double>{0, 0}, std::vector<double>{0, 0});
 
     std::cout << a << "\n";
 
+
+
     return 0;
 }
+
