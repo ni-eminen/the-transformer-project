@@ -63,6 +63,32 @@ class Neuron {
         return vec;
     }
 
+    double binary_cross_entropy(std::vector<double> y, std::vector<double> y_pred) {
+        y = replaceZeros(y, 1.0/pow(10, 100));
+        y_pred = replaceZeros(y_pred, 1.0/pow(10, 100));
+
+        double result = 0;
+        for(int i = 0; i<y.size(); i++) {
+            double temp = y[i] * log(y_pred[i]) + (1-y[i]) * log(1-y_pred[i]);
+            result = result + temp;
+        }   
+
+        return -result;
+    }
+
+    double d_binary_cross_entropy(std::vector<double> y, std::vector<double> y_pred) {
+        y = replaceZeros(y, 1.0/pow(10, 100));
+        y_pred = replaceZeros(y_pred, 1.0/pow(10, 100));
+
+        double result = 0;
+        for(int i = 0; i<y.size(); i++) {
+            double temp = (y[i]-y_pred[i]) / (y_pred[i]*(-y_pred[i] + 1));
+            result = result + temp;
+        }
+
+        return -result;
+    }
+
     double cross_entropy(std::vector<double> y, std::vector<double> y_pred) {
         // Remove zeros from arrays to avoid log(0) call.
         y = replaceZeros(y, 1.0/pow(10, 100));
@@ -78,9 +104,7 @@ class Neuron {
             result += y[i] * log2(y_pred[i]);
         }
 
-        result = -(1/y.size()) * result; 
-
-        return result;
+        return -result;
     }
 
 
@@ -99,8 +123,6 @@ class Neuron {
             result +=  (y[i] / (y_pred[i] * log(2)));
         }
 
-        result = (1/y.size()) * result; 
-
         return -result;
     }
 
@@ -114,16 +136,14 @@ class Neuron {
     void train(std::vector<double> x, std::vector<double> y) {
         double y_pred = forward_propagate(x);
 
-        double E_total = cross_entropy(y, std::vector<double>{y_pred});
-
-        // std::cout << "error " << E_total << std::endl; 
+        double E_total = loss_function(y, std::vector<double>{y_pred});
 
         double* weight_adjustments = new double[weights.size()];
 
         // now we must figure out for each weight, how much the weight contributed to the E_total
         int i = 0;
         for (double weight : weights) {
-            double E_total_wrt_y_pred = d_cross_entropy(y, std::vector<double>{y_pred});
+            double E_total_wrt_y_pred = d_binary_cross_entropy(y, std::vector<double>{y_pred});
             double y_pred_wrt_weighted_sum = d_sigmoid(weighted_sum(weights, x));
             double weighted_sum_wrt_weight = x[i];
 
@@ -138,7 +158,7 @@ class Neuron {
 
 
 double Neuron::loss_function(std::vector<double> y, std::vector<double> y_pred) {
-    return cross_entropy(y, y_pred);
+    return binary_cross_entropy(y, y_pred);
 }
 
 
@@ -164,13 +184,19 @@ int main(int argc, char *argv[])
     printVector(perceptron.weights, "before:");
 
     // Training
-    for(int i=0;i<1;i++) {
+    for(int i=0;i<10;i++) {
         for(int i=0;i<X.size();i++) perceptron.train(X[i], y[i]);
     }
 
     printVector(perceptron.weights, "after training");
 
-    for(int i = 0; i<X.size(); i++) std::cout << perceptron.forward_propagate(X[i]) << " error: " << perceptron.cross_entropy(y[i], std::vector<double>{perceptron.forward_propagate(X[i])}) << std::endl;
+    for(int i = 0; i<X.size(); i++) std::cout << perceptron.forward_propagate(X[i]) << " error: " << perceptron.loss_function(y[i], std::vector<double>{perceptron.forward_propagate(X[i])}) << std::endl;
+
+    std::cout << perceptron.loss_function(std::vector<double>{0}, std::vector<double>{0}) << std::endl;
+
+    double pred = perceptron.forward_propagate(std::vector<double> {1, 0});
+    std::cout << perceptron.loss_function(std::vector<double>{0}, std::vector<double>{pred}) << std::endl;
+    std::cout << perceptron.loss_function(std::vector<double>{0}, std::vector<double>{1}) << std::endl;
 
     return 0;
 }
