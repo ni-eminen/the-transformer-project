@@ -15,7 +15,6 @@ class Neuron {
     double learning_rate;
     double bias;
     std::vector<double> weights;
-    double loss_function(std::vector<double> y, std::vector<double> y_pred);
     Neuron(double bias, double learning_rate, std::vector<double> initial_weights) {
         this->weights = initial_weights;
         this->bias = bias;
@@ -89,43 +88,6 @@ class Neuron {
         return -result;
     }
 
-    double cross_entropy(std::vector<double> y, std::vector<double> y_pred) {
-        // Remove zeros from arrays to avoid log(0) call.
-        y = replaceZeros(y, 1.0/pow(10, 100));
-        y_pred = replaceZeros(y_pred, 1.0/pow(10, 100));
-
-        if (y.size() != y_pred.size()) {
-            throw std::invalid_argument("Error: Truth value and predicted value vectors should be the same size.");
-        }
-
-        double result = 0;
-
-        for (int i = 0; i<y.size(); i++) {
-            result += y[i] * log2(y_pred[i]);
-        }
-
-        return -result;
-    }
-
-
-    double d_cross_entropy(std::vector<double> y, std::vector<double> y_pred) {
-        // Remove zeros from arrays to avoid log(0) call.
-        y = replaceZeros(y, 1.0/pow(10, 100));
-        y_pred = replaceZeros(y_pred, 1.0/pow(10, 100));
-
-        if (y.size() != y_pred.size()) {
-            throw std::invalid_argument("Error: Truth value and predicted value vectors should be the same size.");
-        }
-
-        double result = 0;
-
-        for (int i = 0; i<y.size(); i++) {
-            result +=  (y[i] / (y_pred[i] * log(2)));
-        }
-
-        return -result;
-    }
-
     double forward_propagate(std::vector<double> inputs) {
         double weighted_sum = combination_function(inputs, weights);
         double activation_output = activation_function(weighted_sum);
@@ -154,14 +116,11 @@ class Neuron {
             i += 1;
         }
     }
+
+    double loss_function(std::vector<double> y, std::vector<double> y_pred) {
+        return binary_cross_entropy(y, y_pred);
+    }
 };
-
-
-double Neuron::loss_function(std::vector<double> y, std::vector<double> y_pred) {
-    return binary_cross_entropy(y, y_pred);
-}
-
-
 
 
 int main(int argc, char *argv[])
