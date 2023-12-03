@@ -64,23 +64,27 @@ class Neuron {
     }
 
     double binary_cross_entropy(std::vector<double> y, std::vector<double> y_pred) {
-        y = replaceZeros(y, 1.0/pow(10, 100));
-        y_pred = replaceZeros(y_pred, 1.0/pow(10, 100));
+        y = replaceZeros(y, 1.0/pow(10, 10));
+        y_pred = replaceZeros(y_pred, 1.0/pow(10, 10));
 
         double result = 0;
-        for(int i = 0; i<y.size(); i++) {
-            double temp = y[i] * log(y_pred[i]); // + (1-y[i]) * log(1-y_pred[i]);
-            result = result + temp;
-        }   
+        for (int i = 0; i<y.size(); i++) {
+            if (y_pred[i] == 1) {
+                y_pred[i] = 1.0 - 1.0/pow(10, 10);
+            }
 
-        return -result;
+            double temp = y[i] * log(y_pred[i]) + (1.0-y[i])*(log(1.0-y_pred[i]));
+            result = result + temp;
+        }
+
+        return -(1.0/y.size()) * result;
     }
 
 
 
     double d_binary_cross_entropy(std::vector<double> y, std::vector<double> y_pred) {
-        y = replaceZeros(y, 1.0/pow(10, 100));
-        y_pred = replaceZeros(y_pred, 1.0/pow(10, 100));
+        y = replaceZeros(y, 1.0/pow(10, 10));
+        y_pred = replaceZeros(y_pred, 1.0/pow(10, 10));
 
         double result = 0;
         for(int i = 0; i<y.size(); i++) {
@@ -147,15 +151,17 @@ int main(int argc, char *argv[])
     std::vector<std::vector<double>> X = std::vector<std::vector<double>>{{1,1},    {1,0},  {0,1},  {0,0}};
     std::vector<std::vector<double>> y = std::vector<std::vector<double>>{{1},      {0},    {0},    {0}};
 
-    std::vector<double> prev_w = perceptron.weights;
+    // std::vector<double> prev_w = perceptron.weights;
 
     // Training
-    for(int i=0;i<1000000;i++) {
+    for(int i=0;i<1000;i++) {
         for(int i=0;i<X.size();i++) perceptron.train(X[i], y[i]);
     }
 
     double pred = perceptron.forward_propagate(std::vector<double> {1, 1});
     std::cout << pred << std::endl;
+
+    // std::cout << perceptron.binary_cross_entropy(std::vector<double>{1,1,1}, std::vector<double>{1,1,0.000001}) << std::endl;
 
     return 0;
 }
