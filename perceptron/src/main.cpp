@@ -1,3 +1,4 @@
+using namespace std;
 #include <cstdlib>
 #include <iomanip>
 #include <iostream>
@@ -68,12 +69,14 @@ class Neuron {
 
         double result = 0;
         for(int i = 0; i<y.size(); i++) {
-            double temp = y[i] * log(y_pred[i]) + (1-y[i]) * log(1-y_pred[i]);
+            double temp = y[i] * log(y_pred[i]); // + (1-y[i]) * log(1-y_pred[i]);
             result = result + temp;
         }   
 
         return -result;
     }
+
+
 
     double d_binary_cross_entropy(std::vector<double> y, std::vector<double> y_pred) {
         y = replaceZeros(y, 1.0/pow(10, 100));
@@ -81,7 +84,7 @@ class Neuron {
 
         double result = 0;
         for(int i = 0; i<y.size(); i++) {
-            double temp = (y[i]-y_pred[i]) / (y_pred[i]*(-y_pred[i] + 1));
+            double temp = log(y_pred[i]);//(y[i]-y_pred[i]) / (y_pred[i]*(-y_pred[i] + 1));
             result = result + temp;
         }
 
@@ -92,7 +95,7 @@ class Neuron {
         double weighted_sum = combination_function(inputs, weights);
         double activation_output = activation_function(weighted_sum);
 
-        return round(activation_output);
+        return activation_output;
     }
 
     void train(std::vector<double> x, std::vector<double> y) {
@@ -102,7 +105,7 @@ class Neuron {
 
         double* weight_adjustments = new double[weights.size()];
 
-        // now we must figure out for each weight, how much the weight contributed to the E_total
+        // Now we must figure out for each weight, how much the weight contributed to the E_total
         int i = 0;
         for (double weight : weights) {
             double E_total_wrt_y_pred = d_binary_cross_entropy(y, std::vector<double>{y_pred});
@@ -115,6 +118,14 @@ class Neuron {
 
             i += 1;
         }
+
+        // same for bias term
+        double E_total_wrt_y_pred = d_binary_cross_entropy(y, std::vector<double>{y_pred});
+        double y_pred_wrt_weighted_sum = d_sigmoid(weighted_sum(weights, x));
+        double weighted_sum_wrt_bias = this->bias;
+        double biasAdjustment = E_total_wrt_y_pred * y_pred_wrt_weighted_sum * weighted_sum_wrt_bias;
+
+        this->bias = learning_rate * biasAdjustment;
     }
 
     double loss_function(std::vector<double> y, std::vector<double> y_pred) {
@@ -131,31 +142,33 @@ int main(int argc, char *argv[])
     // 1 0      0
     // 0 1      0
     // 0 0      0
-
-    Neuron perceptron = Neuron(-1, .5, std::vector<double>{-1, 1 });
+    Neuron perceptron = Neuron(-1, .1, std::vector<double>{-1, 1 });
 
     std::vector<std::vector<double>> X = std::vector<std::vector<double>>{{1,1},    {1,0},  {0,1},  {0,0}};
     std::vector<std::vector<double>> y = std::vector<std::vector<double>>{{1},      {0},    {0},    {0}};
 
-    for(int i = 0; i<X.size(); i++) std::cout << perceptron.forward_propagate(X[i]) << " error: " << perceptron.cross_entropy(y[i], std::vector<double>{perceptron.forward_propagate(X[i])}) << std::endl;
+    // for(int i = 0; i<X.size(); i++) std::cout << perceptron.forward_propagate(X[i]) << " error: " << perceptron.binary_cross_entropy(y[i], std::vector<double>{perceptron.forward_propagate(X[i])}) << std::endl;
 
     std::vector<double> prev_w = perceptron.weights;
-    printVector(perceptron.weights, "before:");
+    // printVector(perceptron.weights, "before:");
+    // std::cout << perceptron.bias << std::endl;
 
     // Training
-    for(int i=0;i<10;i++) {
+    for(int i=0;i<1000000;i++) {
         for(int i=0;i<X.size();i++) perceptron.train(X[i], y[i]);
     }
 
-    printVector(perceptron.weights, "after training");
+    // printVector(perceptron.weights, "after training");
+    // std::cout << perceptron.bias << std::endl;
 
-    for(int i = 0; i<X.size(); i++) std::cout << perceptron.forward_propagate(X[i]) << " error: " << perceptron.loss_function(y[i], std::vector<double>{perceptron.forward_propagate(X[i])}) << std::endl;
+    // for(int i = 0; i<X.size(); i++) std::cout << perceptron.forward_propagate(X[i]) << " error: " << perceptron.loss_function(y[i], std::vector<double>{perceptron.forward_propagate(X[i])}) << std::endl;
 
-    std::cout << perceptron.loss_function(std::vector<double>{0}, std::vector<double>{0}) << std::endl;
+    // std::cout << perceptron.loss_function(std::vector<double>{0}, std::vector<double>{0}) << std::endl;
 
-    double pred = perceptron.forward_propagate(std::vector<double> {1, 0});
-    std::cout << perceptron.loss_function(std::vector<double>{0}, std::vector<double>{pred}) << std::endl;
-    std::cout << perceptron.loss_function(std::vector<double>{0}, std::vector<double>{1}) << std::endl;
+    double pred = perceptron.forward_propagate(std::vector<double> {1, 1});
+    std::cout << pred << std::endl;
+    // std::cout << perceptron.loss_function(std::vector<double>{0}, std::vector<double>{pred}) << std::endl;
+    // std::cout << perceptron.loss_function(std::vector<double>{0}, std::vector<double>{1}) << std::endl;
 
     return 0;
 }
