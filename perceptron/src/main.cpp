@@ -147,28 +147,15 @@ int main(int argc, char *argv[])
     std::vector<std::vector<double>> X = std::vector<std::vector<double>>{{1,1},    {1,0},  {0,1},  {0,0}};
     std::vector<std::vector<double>> y = std::vector<std::vector<double>>{{1},      {0},    {0},    {0}};
 
-    // for(int i = 0; i<X.size(); i++) std::cout << perceptron.forward_propagate(X[i]) << " error: " << perceptron.binary_cross_entropy(y[i], std::vector<double>{perceptron.forward_propagate(X[i])}) << std::endl;
-
     std::vector<double> prev_w = perceptron.weights;
-    // printVector(perceptron.weights, "before:");
-    // std::cout << perceptron.bias << std::endl;
 
     // Training
     for(int i=0;i<1000000;i++) {
         for(int i=0;i<X.size();i++) perceptron.train(X[i], y[i]);
     }
 
-    // printVector(perceptron.weights, "after training");
-    // std::cout << perceptron.bias << std::endl;
-
-    // for(int i = 0; i<X.size(); i++) std::cout << perceptron.forward_propagate(X[i]) << " error: " << perceptron.loss_function(y[i], std::vector<double>{perceptron.forward_propagate(X[i])}) << std::endl;
-
-    // std::cout << perceptron.loss_function(std::vector<double>{0}, std::vector<double>{0}) << std::endl;
-
     double pred = perceptron.forward_propagate(std::vector<double> {1, 1});
     std::cout << pred << std::endl;
-    // std::cout << perceptron.loss_function(std::vector<double>{0}, std::vector<double>{pred}) << std::endl;
-    // std::cout << perceptron.loss_function(std::vector<double>{0}, std::vector<double>{1}) << std::endl;
 
     return 0;
 }
