@@ -10,6 +10,7 @@ using namespace std;
 #include <numeric>
 #include <stdexcept>
 #include "utils.h"
+#include <cfloat>
 
 class Neuron {
   public:
@@ -64,8 +65,8 @@ class Neuron {
     }
 
     double binary_cross_entropy(std::vector<double> y, std::vector<double> y_pred) {
-        y = replaceZeros(y, 1.0/pow(10, 10));
-        y_pred = replaceZeros(y_pred, 1.0/pow(10, 10));
+        y = replaceZeros(y, DBL_MIN);
+        y_pred = replaceZeros(y_pred, DBL_MIN);
 
         double result = 0;
         for (int i = 0; i<y.size(); i++) {
@@ -83,16 +84,22 @@ class Neuron {
 
 
     double d_binary_cross_entropy(std::vector<double> y, std::vector<double> y_pred) {
-        y = replaceZeros(y, 1.0/pow(10, 10));
-        y_pred = replaceZeros(y_pred, 1.0/pow(10, 10));
+        y = replaceZeros(y, DBL_MIN);
+        y_pred = replaceZeros(y_pred, DBL_MIN);
+
+
 
         double result = 0;
         for(int i = 0; i<y.size(); i++) {
-            double temp = log(y_pred[i]);//(y[i]-y_pred[i]) / (y_pred[i]*(-y_pred[i] + 1));
+            if (y_pred[i] == 1) {
+                y_pred[i] = 1.0 - 1.0/pow(10, 10);
+            }
+
+            double temp = (y[i] / y_pred[i]) - ((1.0 - y[i]) / (1.0 - y_pred[i]));
             result = result + temp;
         }
 
-        return -result;
+        return -(1.0/y.size()) * result;
     }
 
     double forward_propagate(std::vector<double> inputs) {
@@ -126,10 +133,9 @@ class Neuron {
         // same for bias term
         double E_total_wrt_y_pred = d_binary_cross_entropy(y, std::vector<double>{y_pred});
         double y_pred_wrt_weighted_sum = d_sigmoid(weighted_sum(weights, x));
-        double weighted_sum_wrt_bias = this->bias;
+        double weighted_sum_wrt_bias = 1;
         double biasAdjustment = E_total_wrt_y_pred * y_pred_wrt_weighted_sum * weighted_sum_wrt_bias;
-
-        this->bias = learning_rate * biasAdjustment;
+        bias -= learning_rate * biasAdjustment;
     }
 
     double loss_function(std::vector<double> y, std::vector<double> y_pred) {
@@ -146,21 +152,25 @@ int main(int argc, char *argv[])
     // 1 0      0
     // 0 1      0
     // 0 0      0
-    Neuron perceptron = Neuron(-1, .1, std::vector<double>{-1, 1 });
+    Neuron perceptron = Neuron(1.0, .5, std::vector<double>{-1, 1 });
 
     std::vector<std::vector<double>> X = std::vector<std::vector<double>>{{1,1},    {1,0},  {0,1},  {0,0}};
-    std::vector<std::vector<double>> y = std::vector<std::vector<double>>{{1},      {0},    {0},    {0}};
+    std::vector<std::vector<double>> y = std::vector<std::vector<double>>{{1},      {1},    {1},    {0}};
 
     // std::vector<double> prev_w = perceptron.weights;
 
     // Training
-    for(int i=0;i<1000;i++) {
+    for(int i=0;i<10000;i++) {
         for(int i=0;i<X.size();i++) perceptron.train(X[i], y[i]);
     }
 
-    double pred = perceptron.forward_propagate(std::vector<double> {1, 1});
-    std::cout << pred << std::endl;
+    for (int i = 0; i<X.size(); i++) {
+        double pred = perceptron.forward_propagate(X[i]);
+        std::cout << "pred: " << round(pred) << std::endl;
+    }
 
+    printVector(perceptron.weights);
+    std::cout << perceptron.bias << std::endl;
     // std::cout << perceptron.binary_cross_entropy(std::vector<double>{1,1,1}, std::vector<double>{1,1,0.000001}) << std::endl;
 
     return 0;
