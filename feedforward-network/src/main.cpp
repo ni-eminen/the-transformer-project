@@ -1,9 +1,17 @@
 using namespace std;
+#include <cstdlib>
+#include <iomanip>
 #include <iostream>
 #include <vector>
-#include <cmath>
+#include <math.h> 
+#include <string>
+#include <tuple>
+#include <algorithm>
+#include <numeric>
+#include <stdexcept>
+#include <cfloat>
 #include "utils.h"
-#include "perceptron.cpp"
+
 
 int main(int argc, char *argv[])
 {
@@ -13,7 +21,10 @@ int main(int argc, char *argv[])
     // 1 0      0
     // 0 1      0
     // 0 0      0
-    Neuron perceptron = Neuron(1.0, .5, std::vector<double>{-1, 1});
+    Neuron perceptron_1 = Neuron(1.0, .5, std::vector<double>{-1, 1});
+    Neuron perceptron_2 = Neuron(1.0, .5, std::vector<double>{-1, 1});
+    Neuron perceptron_3 = Neuron(1.0, .5, std::vector<double>{-1, 1});
+    Neuron perceptron_4 = Neuron(1.0, .5, std::vector<double>{-1, 1});
 
     std::vector<std::vector<double>> X = std::vector<std::vector<double>>{{1,1},    {1,0},  {0,1},  {0,0}};
     std::vector<std::vector<double>> y = std::vector<std::vector<double>>{{1},      {1},    {1},    {0}};
