@@ -1,14 +1,14 @@
-# 1. The Percetron
+# The Percetron
 - Just a perceptron, a single neuron capable of binary classification.
 - Provides a foundational understanding of feedforward neural networks.
 - Implementation includes weights, activation functions, loss functions, bias terms, and backpropagation—all from scratch.
 
-# 2. Feed-Forward Neural Network
+# Feed-Forward Neural Network
 - Explores the workings of larger neural networks.
 - Focuses on the implementation of backpropagation within a broader network context.
 - Is comprised of multiple layers of interlinked perceptrons.
 
-# 3. The Transformer
+# The Transformer
 
 This project implements the Transformer model architecture in C++, following the design principles outlined in the paper "Attention is All You Need" by Vaswani et al. The Transformer model is a versatile neural network architecture widely used in natural language processing tasks.
 
