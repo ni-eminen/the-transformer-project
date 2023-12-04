@@ -33,43 +33,22 @@ The C++ implementation of the Transformer model comprises several key components
 
 ### Prerequisites
 
-- C++ compiler (e.g., g++)
-- (Any additional libraries or dependencies; specify them here)
+- C++ compiler (I used g++, it is also used in the Makefile)
 
 ### Compilation
 
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/transformer-implementation-cpp.git
+   git clone git@github.com:ni-eminen/the-transformer-project.git
    ```
 
 2. Build the project:
 
    ```bash
-   cd transformer-implementation-cpp
+   cd the-transformer-project
    make
    ```
-
-### Usage
-
-1. Train the model:
-
-   ```bash
-   ./train --config config.yaml
-   ```
-
-2. Evaluate the model:
-
-   ```bash
-   ./evaluate --config config.yaml
-   ```
-
-(Adjust instructions according to your build system and project structure.)
-
-## Configuration
-
-- The configuration file (`config.yaml`) contains hyperparameters and settings for training and evaluation. Modify this file to suit your specific requirements.
 
 ## Contributing
 
@@ -77,12 +56,9 @@ Pull requests and contributions are welcome. For major changes, please open an i
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+This project is licensed under the MIT License.
 
 ## Acknowledgments
 
 - Vaswani, A., et al. (2017). "Attention is All You Need." In Advances in Neural Information Processing Systems.
 
----
-
-Feel free to customize this template based on your project's specifics and your preferences.
