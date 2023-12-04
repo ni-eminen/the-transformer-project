@@ -1,6 +1,3 @@
-Certainly! Here's a README template for a Transformer implementation in C++:
-
----
 # 1. The Percetron
 - Just a perceptron, a single neuron capable of binary classification.
 - Provides a foundational understanding of feedforward neural networks.
