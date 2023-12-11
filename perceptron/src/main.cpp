@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     }
 
     for (int i = 0; i<X.size(); i++) {
-        double pred = perceptron.forward_propagate(X[i]);
+        double pred = perceptron.forwardPropagate(X[i]);
         std::cout << "pred: " << round(pred) << std::endl;
     }
 

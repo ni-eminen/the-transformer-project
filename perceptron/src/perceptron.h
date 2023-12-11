@@ -16,21 +16,21 @@ public:
 
     void print(std::string x);
 
-    double weighted_sum(std::vector<double> weights, std::vector<double> inputs);
+    double weightedSum(std::vector<double> weights, std::vector<double> inputs);
 
     double sigmoid(double x);
 
-    double d_sigmoid(double x);
+    double dSigmoid(double x);
 
-    double combination_function(std::vector<double> weights, std::vector<double> inputs);
+    double combinationFunction(std::vector<double> weights, std::vector<double> inputs);
 
-    double activation_function(double x);
+    double activationFunction(double x);
 
-    double forward_propagate(std::vector<double> inputs);
+    double forwardPropagate(std::vector<double> inputs);
 
     void train(std::vector<double> x, std::vector<double> y);
 
-    double loss_function(std::vector<double> y, std::vector<double> y_pred);
+    double lossFunction(std::vector<double> y, std::vector<double> y_pred);
 };
 
 #endif // PERCEPTRON_H

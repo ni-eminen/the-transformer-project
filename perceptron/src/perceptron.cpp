@@ -16,7 +16,7 @@ class Perceptron {
         this->learning_rate = learning_rate;
     }
 
-    double weighted_sum(std::vector<double> weights, std::vector<double> inputs) {
+    double weightedSum(std::vector<double> weights, std::vector<double> inputs) {
         double result = 0;
 
         for(int i = 0; i<weights.size(); i++) {
@@ -30,29 +30,29 @@ class Perceptron {
         return 1 / (1 + exp(-x));
     }
 
-    double d_sigmoid(double x) {
+    double dSigmoid(double x) {
         return sigmoid(x) * (1 - sigmoid(x));
     }
 
-    double combination_function(std::vector<double> weights, std::vector<double> inputs) {
-        return weighted_sum(weights, inputs);
+    double combinationFunction(std::vector<double> weights, std::vector<double> inputs) {
+        return weightedSum(weights, inputs);
     }
 
-    double activation_function(double x) {
+    double activationFunction(double x) {
         return sigmoid(x);
     }
 
-    double forward_propagate(std::vector<double> inputs) {
-        double weighted_sum = combination_function(inputs, weights);
-        double activation_output = activation_function(weighted_sum);
+    double forwardPropagate(std::vector<double> inputs) {
+        double weightedSum = combinationFunction(inputs, weights);
+        double activation_output = activationFunction(weightedSum);
 
         return activation_output;
     }
 
     void train(std::vector<double> x, std::vector<double> y) {
-        double y_pred = forward_propagate(x);
+        double y_pred = forwardPropagate(x);
 
-        double E_total = loss_function(y, std::vector<double>{y_pred});
+        double E_total = lossFunction(y, std::vector<double>{y_pred});
 
         double* weight_adjustments = new double[weights.size()];
 
@@ -60,10 +60,10 @@ class Perceptron {
         int i = 0;
         for (double weight : weights) {
             double E_total_wrt_y_pred = d_binary_cross_entropy(y, std::vector<double>{y_pred});
-            double y_pred_wrt_weighted_sum = d_sigmoid(weighted_sum(weights, x));
-            double weighted_sum_wrt_weight = x[i];
+            double y_pred_wrt_weightedSum = dSigmoid(weightedSum(weights, x));
+            double weightedSum_wrt_weight = x[i];
 
-            weight_adjustments[i] = E_total_wrt_y_pred * y_pred_wrt_weighted_sum * weighted_sum_wrt_weight;
+            weight_adjustments[i] = E_total_wrt_y_pred * y_pred_wrt_weightedSum * weightedSum_wrt_weight;
 
             weights[i] -= learning_rate * weight_adjustments[i];
 
@@ -72,13 +72,13 @@ class Perceptron {
 
         // same for bias term
         double E_total_wrt_y_pred = d_binary_cross_entropy(y, std::vector<double>{y_pred});
-        double y_pred_wrt_weighted_sum = d_sigmoid(weighted_sum(weights, x));
-        double weighted_sum_wrt_bias = 1;
-        double biasAdjustment = E_total_wrt_y_pred * y_pred_wrt_weighted_sum * weighted_sum_wrt_bias;
+        double y_pred_wrt_weightedSum = dSigmoid(weightedSum(weights, x));
+        double weightedSum_wrt_bias = 1;
+        double biasAdjustment = E_total_wrt_y_pred * y_pred_wrt_weightedSum * weightedSum_wrt_bias;
         bias -= learning_rate * biasAdjustment;
     }
 
-    double loss_function(std::vector<double> y, std::vector<double> y_pred) {
+    double lossFunction(std::vector<double> y, std::vector<double> y_pred) {
         return binary_cross_entropy(y, y_pred);
     }
 };
