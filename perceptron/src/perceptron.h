@@ -1,18 +1,18 @@
-#ifndef NEURON_H
-#define NEURON_H
+#ifndef PERCEPTRON_H
+#define PERCEPTRON_H
 
 #include <iostream>
 #include <vector>
 #include <cmath>
 #include <math.h> 
 
-class Neuron {
+class Perceptron {
 public:
     double learning_rate;
     double bias;
     std::vector<double> weights;
 
-    Neuron(double bias, double learning_rate, std::vector<double> initial_weights);
+    Perceptron(double bias, double learning_rate, std::vector<double> initial_weights);
 
     void print(std::string x);
 
@@ -33,4 +33,4 @@ public:
     double loss_function(std::vector<double> y, std::vector<double> y_pred);
 };
 
-#endif // NEURON_H
+#endif // PERCEPTRON_H

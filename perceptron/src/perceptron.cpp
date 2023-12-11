@@ -2,15 +2,15 @@
 #include <vector>
 #include <cmath>
 #include <math.h> 
-#include "utils.h"
+#include "../../utils/utils.h"
 
 
-class Neuron {
+class Perceptron {
   public:
     double learning_rate;
     double bias;
     std::vector<double> weights;
-    Neuron(double bias, double learning_rate, std::vector<double> initial_weights) {
+    Perceptron(double bias, double learning_rate, std::vector<double> initial_weights) {
         this->weights = initial_weights;
         this->bias = bias;
         this->learning_rate = learning_rate;
