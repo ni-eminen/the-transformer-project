@@ -7,7 +7,12 @@ class MultilayerPerceptron {
         vector<double> weights;
         vector<Perceptron> neurons;
 
-        double forwardPropagate()
+        double forwardPropagate(std::vector<double> inputs) {
+            double weightedSum = combinationFunction(inputs, weights);
+            double activation_output = activationFunction(weightedSum);
+
+            return activation_output;
+        }
 };
 
 
@@ -20,8 +25,6 @@ int main(int argc, char *argv[])
     std::vector<std::vector<Perceptron>> neurons = {
         {perceptron_1, perceptron_2, perceptron_3}
     };
-
-
 
     return 0;
 }
