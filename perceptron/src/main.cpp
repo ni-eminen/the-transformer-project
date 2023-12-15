@@ -1,13 +1,12 @@
 
+#include <cmath>
 #include <iostream>
 #include <vector>
-#include <cmath>
 #include "../../utils/utils.h"
 #include "perceptron.cpp"
 
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     // We want the perceptron to give and-gate logic:
     // input :  output
     // 1 1      1
@@ -26,11 +25,11 @@ int main(int argc, char *argv[])
 
     for (int i = 0; i<X.size(); i++) {
         double pred = perceptron.forward(X[i]);
-        cout << "pred: " << round(pred) << endl;
+        std::cout << "pred: " << round(pred) << std::endl;
     }
 
     printVector(perceptron.weights, "Weights after training");
-    cout << perceptron.bias << endl;
+    std::cout << perceptron.bias << std::endl;
 
     return 0;
 }

@@ -6,18 +6,18 @@
 #include <string>
 #include <cfloat>
 
-void printVector(std::std::vector<double> v, std::string title);
+void printVector(std::vector<double> v, std::string title);
 
-std::std::vector<double> replaceZeros(std::std::vector<double> vec, double replacement);
+std::vector<double> replaceZeros(std::vector<double> vec, double replacement);
 
-double binary_cross_entropy(std::std::vector<double> y, std::std::vector<double> y_pred);
+double binary_cross_entropy(std::vector<double> y, std::vector<double> y_pred);
 
-double d_binary_cross_entropy(std::std::vector<double> y, std::std::vector<double> y_pred);
+double d_binary_cross_entropy(std::vector<double> y, std::vector<double> y_pred);
 
 double sigmoid(double x);
 
 double dSigmoid(double x);
 
-double weightedSum(std::std::vector<double> weights, std::std::vector<double> inputs)
+double weightedSum(std::vector<double> weights, std::vector<double> inputs)
 
 #endif // UTILS_TRANSFORMER

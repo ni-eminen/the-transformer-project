@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
     }  
 
     double prediction = mlp.forward(std::vector<double>{1, 0, 0, 0})
-    cout << "prediction" << prediction << endl;
+    std::cout << "prediction" << prediction << std::endl;
 
 
 
