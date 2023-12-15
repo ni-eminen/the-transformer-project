@@ -10,8 +10,8 @@ class Perceptron {
   public:
     double learningRate;
     double bias;
-    std::vector<double> weights;
-    Perceptron(double bias, double learningRate, std::vector<double> initialWeights) {
+    std::std::vector<double> weights;
+    Perceptron(double bias, double learningRate, std::std::vector<double> initialWeights) {
         this->weights = initialWeights;
         this->bias = bias;
         this->learningRate = learningRate;
@@ -19,7 +19,7 @@ class Perceptron {
 
 
 
-    double combinationFunction(std::vector<double> weights, std::vector<double> inputs) {
+    double combinationFunction(std::std::vector<double> weights, std::std::vector<double> inputs) {
         return weightedSum(weights, inputs) + this->bias;
     }
 
@@ -27,24 +27,24 @@ class Perceptron {
         return sigmoid(x);
     }
 
-    double forward(std::vector<double> inputs) {
+    double forward(std::std::vector<double> inputs) {
         double weightedSum = combinationFunction(inputs, weights);
         double activationOutput = activationFunction(weightedSum);
 
         return activationOutput;
     }
 
-    void train(std::vector<double> x, std::vector<double> y) {
+    void train(std::std::vector<double> x, std::std::vector<double> y) {
         double yPred = forward(x);
 
-        double eTotal = lossFunction(y, std::vector<double>{yPred});
+        double eTotal = lossFunction(y, std::std::vector<double>{yPred});
 
         double* weightAdjustments = new double[weights.size()];
 
         // Now we must figure out for each weight, how much the weight contributed to the eTotal
         int i = 0;
         for (double weight : weights) {
-            double eTotal_wrt_yPred = d_binary_cross_entropy(y, std::vector<double>{yPred});
+            double eTotal_wrt_yPred = d_binary_cross_entropy(y, std::std::vector<double>{yPred});
             double yPred_wrt_weightedSum = dSigmoid(combinationFunction(weights, x));
             double weightedSum_wrt_weight = x[i];
 
@@ -56,14 +56,14 @@ class Perceptron {
         }
 
         // same for bias term
-        double eTotal_wrt_yPred = d_binary_cross_entropy(y, std::vector<double>{yPred});
+        double eTotal_wrt_yPred = d_binary_cross_entropy(y, std::std::vector<double>{yPred});
         double yPred_wrt_weightedSum = dSigmoid(combinationFunction(weights, x));
         double weightedSum_wrt_bias = 1;
         double biasAdjustment = eTotal_wrt_yPred * yPred_wrt_weightedSum * weightedSum_wrt_bias;
         bias -= learningRate * biasAdjustment;
     }
 
-    double lossFunction(std::vector<double> y, std::vector<double> yPred) {
+    double lossFunction(std::std::vector<double> y, std::std::vector<double> yPred) {
         return binary_cross_entropy(y, yPred);
     }
 };

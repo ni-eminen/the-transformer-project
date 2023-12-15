@@ -10,27 +10,27 @@ class MultilayerPerceptron {
 public:
     double learning_rate;
     double bias;
-    std::vector<double> weights;
+    std::std::vector<double> weights;
 
-    MultilayerPerceptron(double bias, double learning_rate, std::vector<double> initial_weights);
+    MultilayerPerceptron(double bias, double learning_rate, std::std::vector<double> initial_weights);
 
     void print(std::string x);
 
-    double weightedSum(std::vector<double> weights, std::vector<double> inputs);
+    double weightedSum(std::std::vector<double> weights, std::std::vector<double> inputs);
 
     double sigmoid(double x);
 
     double dSigmoid(double x);
 
-    double combinationFunction(std::vector<double> weights, std::vector<double> inputs);
+    double combinationFunction(std::std::vector<double> weights, std::std::vector<double> inputs);
 
     double activationFunction(double x);
 
-    double forward(std::vector<double> inputs);
+    double forward(std::std::vector<double> inputs);
 
-    void train(std::vector<double> x, std::vector<double> y);
+    void train(std::std::vector<double> x, std::std::vector<double> y);
 
-    double lossFunction(std::vector<double> y, std::vector<double> y_pred);
+    double lossFunction(std::std::vector<double> y, std::std::vector<double> y_pred);
 };
 
 #endif // PERCEPTRON_H
