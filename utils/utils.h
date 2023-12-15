@@ -14,4 +14,10 @@ double binary_cross_entropy(std::vector<double> y, std::vector<double> y_pred);
 
 double d_binary_cross_entropy(std::vector<double> y, std::vector<double> y_pred);
 
+double sigmoid(double x);
+
+double dSigmoid(double x);
+
+double weightedSum(std::vector<double> weights, std::vector<double> inputs)
+
 #endif // UTILS_TRANSFORMER

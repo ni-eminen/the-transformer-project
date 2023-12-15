@@ -59,3 +59,22 @@ double d_binary_cross_entropy(std::vector<double> y, std::vector<double> y_pred)
 
     return -(1.0/y.size()) * result;
 }
+
+
+double sigmoid(double x) {
+    return 1 / (1 + exp(-x));
+}
+
+double dSigmoid(double x) {
+    return sigmoid(x) * (1 - sigmoid(x));
+}
+
+double weightedSum(std::vector<double> weights, std::vector<double> inputs) {
+    double result = 0;
+
+    for(int i = 0; i<weights.size(); i++) {
+        result += (weights[i] * inputs[i]);
+    }
+
+    return result + bias;
+}

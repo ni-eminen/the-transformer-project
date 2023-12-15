@@ -6,13 +6,6 @@ class MultilayerPerceptron {
     public:
         vector<double> weights;
         vector<Perceptron> neurons;
-
-        double forwardPropagate(std::vector<double> inputs) {
-            double weightedSum = combinationFunction(inputs, weights);
-            double activation_output = activationFunction(weightedSum);
-
-            return activation_output;
-        }
 };
 
 
