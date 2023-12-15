@@ -6,7 +6,7 @@
 #include <string>
 #include <cfloat>
 
-void printVector(std::vector<double> v, std::string title = "vector");
+void printVector(std::vector<double> v, std::string title);
 
 std::vector<double> replaceZeros(std::vector<double> vec, double replacement);
 

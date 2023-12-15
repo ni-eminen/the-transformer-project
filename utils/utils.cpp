@@ -45,8 +45,6 @@ double d_binary_cross_entropy(std::vector<double> y, std::vector<double> y_pred)
     y = replaceZeros(y, DBL_MIN);
     y_pred = replaceZeros(y_pred, DBL_MIN);
 
-
-
     double result = 0;
     for(int i = 0; i<y.size(); i++) {
         if (y_pred[i] == 1) {
@@ -76,5 +74,5 @@ double weightedSum(std::vector<double> weights, std::vector<double> inputs) {
         result += (weights[i] * inputs[i]);
     }
 
-    return result + bias;
+    return result;
 }

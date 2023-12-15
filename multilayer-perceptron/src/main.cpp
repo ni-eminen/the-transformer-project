@@ -2,23 +2,28 @@ using namespace std;
 #include <vector>
 #include "../../perceptron/src/perceptron.cpp"
 
-class MultilayerPerceptron {
-    public:
-        vector<double> weights;
-        vector<Perceptron> neurons;
-};
-
 
 int main(int argc, char *argv[])
 {
-    Perceptron perceptron_1 = Perceptron(1.0, .5, std::vector<double>{-1, 1});
-    Perceptron perceptron_2 = Perceptron(1.0, .5, std::vector<double>{-1, 1});
-    Perceptron perceptron_3 = Perceptron(1.0, .5, std::vector<double>{-1, 1});
+    layer_d = 10;
+    layer_amt = 4;
+    initial_bias = 1;
+    
+    vector<vector<double>> X = vector<vector<double>>{{1,1},    {1,0},  {0,1},  {0,0}};
+    vector<vector<double>> y = vector<vector<double>>{{1},      {1},    {1},    {0}};
 
-    std::vector<std::vector<Perceptron>> neurons = {
-        {perceptron_1, perceptron_2, perceptron_3}
-    };
+    MultilayerPerceptron mlp = MultilayerPerceptron(layer_d, layer_amt, initial_bias);
+    
+    for (int i; i<X.size(); i++) {
+        mlp.train(X, y);
+    }  
+
+    double prediction = mlp.forward(vector<double>{1, 0, 0, 0})
+    cout << "prediction" << prediction << endl;
+
+
+
+
 
     return 0;
 }
-

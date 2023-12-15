@@ -19,7 +19,7 @@ public:
     
     double dActivationFunction(double x);
 
-    double forwardPropagate(std::vector<double> inputs);
+    double forward(std::vector<double> inputs);
 
     void train(std::vector<double> x, std::vector<double> y);
 

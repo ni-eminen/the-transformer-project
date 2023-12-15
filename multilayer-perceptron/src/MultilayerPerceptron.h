@@ -6,13 +6,13 @@
 #include <cmath>
 #include <math.h> 
 
-class Perceptron {
+class MultilayerPerceptron {
 public:
     double learning_rate;
     double bias;
     std::vector<double> weights;
 
-    Perceptron(double bias, double learning_rate, std::vector<double> initial_weights);
+    MultilayerPerceptron(double bias, double learning_rate, std::vector<double> initial_weights);
 
     void print(std::string x);
 

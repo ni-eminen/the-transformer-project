@@ -1,31 +1,40 @@
+using namespace std;
 #include <iostream>
 #include <vector>
 #include <cmath>
 #include <math.h> 
 #include "../../classes/NeuralNetwork.h"
-#include "../../utils/utils.cpp"
+#include "../../utils/utils.h"
 
 
-class Perceptron {
+class MultilayerPerceptron {
   public:
     double learningRate;
-    double bias;
-    std::vector<double> weights;
-    Perceptron(double bias, double learningRate, std::vector<double> initialWeights) {
-        this->weights = initialWeights;
-        this->bias = bias;
-        this->learningRate = learningRate;
-    }
+    double initial_bias;
+    vector<double> weights;
+    int layer_d;
+    int layer_amt;
 
+    MultilayerPerceptron(double initial_bias, int layerAmount, int layerDimension, double learningRate, double defaultWeightValue) {
+        this->bias = initial_bias;
+        this->learningRate = learningRate;
+
+        vector<vector<vector<double>>> weights_init(layer_amt, defaultWeightValue);
+        // for(int layer_i = 0; i < 20; i++) {
+        //     layers[i] = weights_init<vector<double>>(layer_d);
+        // }
+    }
 
 
     double combinationFunction(std::vector<double> weights, std::vector<double> inputs) {
         return weightedSum(weights, inputs) + this->bias;
     }
 
+
     double activationFunction(double x) {
         return sigmoid(x);
     }
+
 
     double forward(std::vector<double> inputs) {
         double weightedSum = combinationFunction(inputs, weights);
@@ -33,6 +42,7 @@ class Perceptron {
 
         return activationOutput;
     }
+
 
     void train(std::vector<double> x, std::vector<double> y) {
         double yPred = forward(x);
@@ -45,7 +55,7 @@ class Perceptron {
         int i = 0;
         for (double weight : weights) {
             double eTotal_wrt_yPred = d_binary_cross_entropy(y, std::vector<double>{yPred});
-            double yPred_wrt_weightedSum = dSigmoid(combinationFunction(weights, x));
+            double yPred_wrt_weightedSum = dSigmoid(combinationFunction(weights, x) + bias);
             double weightedSum_wrt_weight = x[i];
 
             weightAdjustments[i] = eTotal_wrt_yPred * yPred_wrt_weightedSum * weightedSum_wrt_weight;
