@@ -2,26 +2,27 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
-#include "../../classes/NeuralNetwork.h"
 #include "../../utils/utils.h"
 
 
 class MultilayerPerceptron {
   public:
     double learningRate;
-    double initial_bias;
+    double bias;
     std::vector<double> weights;
     int layer_d;
     int layer_amt;
 
-    MultilayerPerceptron(double initial_bias, int layerAmount, int layerDimension, double learningRate, double defaultWeightValue) {
-        this->bias = initial_bias;
+    MultilayerPerceptron(double initialBias, double initialWeightValue, int layerAmount, int layerDimension, double learningRate, double defaultWeightValue) {
+        this->bias = initialBias;
         this->learningRate = learningRate;
 
-        std::vector<std::vector<std::vector<double>>> weights_init(layer_amt, defaultWeightValue);
-        // for(int layer_i = 0; i < 20; i++) {
-        //     layers[i] = weights_init<std::vector<double>>(layer_d);
-        // }
+        // Initialize the weights with ones (np.ones(layer_amt, layer_d, layer_d))
+        std::vector<std::vector<std::vector<double>>> weights;
+        std::vector<std::vector<double> > weights_initial(layer_d, std::vector<double>(layer_d, initialWeightValue));
+        for (int i = 0; i<layer_amt; i++) { 
+            weights.push_back(weights_initial);
+        }
     }
 
 

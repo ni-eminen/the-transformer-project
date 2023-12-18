@@ -6,30 +6,22 @@
 #include <cmath>
 
 class Perceptron {
-public:
-    double learning_rate;
-    double bias;
-    std::vector<double> weights;
+    public:
+        double learningRate;
+        double bias;
+        std::vector<double> weights;
 
-    Perceptron(double bias, double learning_rate, std::vector<double> initial_weights);
+        Perceptron(double bias, double learning_rate, std::vector<double> initial_weights);
 
-    void print(std::string x);
+        double combinationFunction(std::vector<double> weights, std::vector<double> inputs);
 
-    double weightedSum(std::vector<double> weights, std::vector<double> inputs);
+        double activationFunction(double x);
 
-    double sigmoid(double x);
+        double forward(std::vector<double> inputs);
 
-    double dSigmoid(double x);
+        void train(std::vector<double> x, std::vector<double> y);
 
-    double combinationFunction(std::vector<double> weights, std::vector<double> inputs);
-
-    double activationFunction(double x);
-
-    double forward(std::vector<double> inputs);
-
-    void train(std::vector<double> x, std::vector<double> y);
-
-    double lossFunction(std::vector<double> y, std::vector<double> y_pred);
+        double lossFunction(std::vector<double> y, std::vector<double> y_pred);
 };
 
 #endif // PERCEPTRON_H

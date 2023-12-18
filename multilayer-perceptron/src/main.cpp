@@ -1,13 +1,13 @@
 
 #include <vector>
-#include "../../perceptron/src/perceptron.cpp"
+#include "MultilayerPerceptron.h"
 
 
 int main(int argc, char *argv[])
 {
-    layer_d = 10;
-    layer_amt = 4;
-    initial_bias = 1;
+    int layer_d = 10;
+    int layer_amt = 4;
+    double initial_bias = 1;
     
     std::vector<std::vector<double>> X = std::vector<std::vector<double>>{{1,1},    {1,0},  {0,1},  {0,0}};
     std::vector<std::vector<double>> y = std::vector<std::vector<double>>{{1},      {1},    {1},    {0}};
@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
         mlp.train(X, y);
     }  
 
-    double prediction = mlp.forward(std::vector<double>{1, 0, 0, 0})
+    double prediction = mlp.forward(std::vector<double>{1, 0, 0, 0});
     std::cout << "prediction" << prediction << std::endl;
 
 

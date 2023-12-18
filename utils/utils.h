@@ -18,6 +18,6 @@ double sigmoid(double x);
 
 double dSigmoid(double x);
 
-double weightedSum(std::vector<double> weights, std::vector<double> inputs)
+double weightedSum(std::vector<double> weights, std::vector<double> inputs);
 
 #endif // UTILS_TRANSFORMER

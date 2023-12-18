@@ -3,6 +3,7 @@
 #include <string>
 #include <cfloat>
 #include <cmath>
+#include "utils.h"
 
 void printVector(std::vector<double> v, std::string title = "vector") {
     std::cout << std::endl << title << ": [";

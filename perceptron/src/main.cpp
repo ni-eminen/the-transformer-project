@@ -2,8 +2,8 @@
 #include <cmath>
 #include <iostream>
 #include <vector>
+#include "perceptron.h"
 #include "../../utils/utils.h"
-#include "perceptron.cpp"
 
 
 int main(int argc, char *argv[]) {

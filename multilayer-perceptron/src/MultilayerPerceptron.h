@@ -15,11 +15,7 @@ public:
 
     void print(std::string x);
 
-    double weightedSum(std::vector<double> weights, std::vector<double> inputs);
-
     double sigmoid(double x);
-
-    double dSigmoid(double x);
 
     double combinationFunction(std::vector<double> weights, std::vector<double> inputs);
 
