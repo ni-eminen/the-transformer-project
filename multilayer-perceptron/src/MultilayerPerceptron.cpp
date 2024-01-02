@@ -6,6 +6,10 @@
 #include "MultilayerPerceptron.h"
 using std::vector;
 
+vector<vector<double>> generateInitialLayerWeights(int layerDimension, int nextLayerDimension, double defaultValue = 1) {
+    vector<vector<double>> weightsInitial(layerDimension, vector<double>(layerDimension, defaultValue));
+    return weightsInitial;
+}
 
 MultilayerPerceptron::MultilayerPerceptron(double initialBias, double initialWeightValue, int hiddenLayerDim, int inputLayerDim, double outputLayerDim, double learningRate) {
     this->learningRate = learningRate;
@@ -13,12 +17,9 @@ MultilayerPerceptron::MultilayerPerceptron(double initialBias, double initialWei
     this->hiddenLayerDim = hiddenLayerDim;
     this->outputLayerDim = outputLayerDim;
 
-    // Initialize the weights with ones (np.ones(layer_amt, layer_d, layer_d))
-    vector<vector<vector<double>>> hiddenWeights;
-    vector<vector<double>> hiddenWeightsInitial(hiddenLayerDim, vector<double>(hiddenLayerDim, initialWeightValue));
-    for (int i = 0; i<this->hiddenWeights.size(); i++) {
-        this->hiddenWeights.push_back(hiddenWeightsInitial);
-    }
+    vector<vector<double>> inputWeights(inputLayerDim, generateInitialLayerWeights(hiddenLayerDim, hiddenLayerDim, initialWeightValue))
+    vector<vector<vector<double>>> hiddenWeights(hiddenLayerDim-1, generateInitialLayerWeights(hiddenLayerDim, hiddenLayerDim, initialWeightValue));
+    hiddenWeights.push_back(generateInitialLayerWeights(hiddenLayerDim, outputLayerDim))
 }
 
 
@@ -33,11 +34,7 @@ double MultilayerPerceptron::activationFunction(double x) {
 
 
 double MultilayerPerceptron::forward(vector<double> inputs) {
-    // for each layer
-    for (int i = 0; i<this->layerAmt; i++) {
-        vector<vector<double>> weightsOfLayer = this->weights[i];
 
-    }
 }
 
 
