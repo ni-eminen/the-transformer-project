@@ -4,6 +4,11 @@ P_DIR = ./perceptron
 P_BUILD = ${P_DIR}/build
 P_X = ${P_BUILD}/a.out
 
+MLP_DIR = ./multilayer-perceptron
+MLP_SRC = ${MLP_DIR}/src
+MLP_BUILD = ${MLP_DIR}/build
+MLP_X = ${MLP_BUILD}/a.out
+
 p:
 	g++ -c ${P_SRC}/perceptron.cpp
 	g++ -c ${UTILS}/utils.cpp
@@ -12,5 +17,8 @@ p:
 	${P_X}
 
 mlp:
-	g++ -o ./multilayer-perceptron/build/a.out ./multilayer-perceptron/src/main.cpp ./utils/utils.cpp
-	./multilayer-perceptron/build/a.out
+	g++ -c ${MLP_SRC}/MultilayerPerceptron.cpp
+	g++ -c ${UTILS}/utils.cpp
+	g++ -c ${MLP_SRC}/main.cpp
+	g++ -o ${MLP_X} main.o utils.o MultilayerPerceptron.o
+	${MLP_X}

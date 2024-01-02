@@ -5,6 +5,8 @@
 #include <vector>
 #include <cmath>
 
+std::vector<std::vector<double>> generateInitialLayerWeights(int layerDimension, int nextLayerDimension, double defaultValue);
+
 class MultilayerPerceptron {
 public:
     double learningRate;
@@ -21,12 +23,10 @@ public:
                          double initialWeightValue, 
                          int hiddenLayerDim, 
                          int inputLayerDim, 
-                         double outputLayerDim, 
+                         int outputLayerDim, 
                          double learningRate);
 
     void print(std::string x);
-
-    double sigmoid(double x);
 
     double combinationFunction(std::vector<double> weights, std::vector<double> inputs);
 

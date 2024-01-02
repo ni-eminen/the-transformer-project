@@ -1,28 +1,30 @@
 
 #include <vector>
-#include "MultilayerPerceptron.h"
+#include "MultilayerPerceptron.hpp"
+using std::vector;
 
 
 int main(int argc, char *argv[])
 {
-    int layerDim = 10;
-    int layerAmt = 4;
-    double initial_bias = 1;
+    int hiddenLayerDim = 10;
+    int inputLayerDim = 2;
+    int outputLayerDim = 1;
+    double initialBias = 1;
     double initialWeightValue = 1;
     double learningRate = .5;
     
     
-    std::vector<std::vector<double>> X = std::vector<std::vector<double>>{{1,1},    {1,0},  {0,1},  {0,0}};
-    std::vector<std::vector<double>> y = std::vector<std::vector<double>>{{1},      {1},    {1},    {0}};
+    vector<vector<double>> X = vector<vector<double>>{{1,1},    {1,0},  {0,1},  {0,0}};
+    vector<vector<double>> y = vector<vector<double>>{{1},      {1},    {1},    {0}};
 
-    MultilayerPerceptron mlp = MultilayerPerceptron(initial_bias, initialWeightValue, layerAmt, layerDim, learningRate);
+    MultilayerPerceptron mlp = MultilayerPerceptron(initialBias, initialWeightValue, hiddenLayerDim, inputLayerDim, outputLayerDim, learningRate);
     
-    for (int i; i<X.size(); i++) {
-        mlp.train(X, y);
-    }  
+    // for (int i; i<X.size(); i++) {
+    //     mlp.train(X, y);
+    // }  
 
-    double prediction = mlp.forward(std::vector<double>{1, 0, 0, 0});
-    std::cout << "prediction" << prediction << std::endl;
+    // double prediction = mlp.forward(std::vector<double>{1, 0, 0, 0});
+    // std::cout << "prediction" << prediction << std::endl;
 
     return 0;
 }
