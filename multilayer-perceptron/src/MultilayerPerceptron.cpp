@@ -27,7 +27,18 @@ MultilayerPerceptron::MultilayerPerceptron(double initialBias, double initialWei
     this->inputWeights = generateInitialLayerWeights(inputLayerDim, hiddenLayerDim, initialWeightValue);
     auto hiddenWeights = generateInitialLayerWeights(hiddenLayerDim, outputLayerDim, initialWeightValue);
     this->hiddenWeights = hiddenWeights;
-    printMatrix(hiddenWeights, "hidden weight after init");
+
+    // All weights in one 3d vector
+    vector<vector<vector<double>>> weights;
+    weights.push_back(this->inputWeights);
+    weights.push_back(this->hiddenWeights);
+    this->weights = weights;
+
+    // All biases in one 2d vector
+    vector<vector<double>> biases;
+    biases.push_back(this->hiddenBiases);
+    biases.push_back(this->outputBiases);
+    this->biases = biases;
 }
 
 
@@ -37,32 +48,19 @@ double MultilayerPerceptron::activationFunction(double x) {
 
 
 vector<double> MultilayerPerceptron::forward(vector<double> inputs) {
-    // this->inputWeights * inputs_1 = [i_1, ..., i_n] + biases = sum => activation(sum) = inputs_2 => repeat with hidden
-    vector<double> weightedSums = matMul(inputs, this->inputWeights);
-    printVector(weightedSums, "weighted sums without bias");
+    vector<double> outputs = inputs;
+    double weightedSumsPlusBias;
+    for (int layer_i = 0; layer_i<this->weights.size(); layer_i++) {
+        vector<double> weightedSums = matMul(outputs, this->weights[layer_i]);
+        outputs = weightedSums;
 
-
-    vector<double> activated = weightedSums;
-    double weightedSumPlusBias;
-    for (int i = 0; i<weightedSums.size(); i++) {
-        weightedSumPlusBias = weightedSums[i] + this->hiddenBiases[i];
-        activated[i] = this->activationFunction(weightedSumPlusBias);
+        for (int neuron_i = 0; neuron_i<weightedSums.size(); neuron_i++) {
+            weightedSumsPlusBias = weightedSums[neuron_i] + this->biases[layer_i][neuron_i];
+            outputs[neuron_i] = this->activationFunction(weightedSumsPlusBias);
+        }
     }
 
-    printVector(activated, "Hidden layer output");
-
-    printMatrix(this->hiddenWeights, "hidden weights");
-    vector<double> weightedSums_2 = matMul(activated, this->hiddenWeights);
-
-    printVector(weightedSums_2, "2");
-
-    activated = weightedSums_2;
-    for (int i = 0; i<weightedSums_2.size(); i++) {
-        weightedSumPlusBias = weightedSums[i] + this->outputBiases[i];
-        activated[i] = this->activationFunction(weightedSumPlusBias);
-    }
-
-    return activated;
+    return outputs;
 }
 
 

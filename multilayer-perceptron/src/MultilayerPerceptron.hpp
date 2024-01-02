@@ -19,6 +19,9 @@ public:
     int inputLayerDim;
     int outputLayerDim;
 
+    std::vector<std::vector<std::vector<double>>> weights;
+    std::vector<std::vector<double>> biases;
+
     MultilayerPerceptron(double initialBias, 
                          double initialWeightValue, 
                          int hiddenLayerDim, 
