@@ -8,12 +8,21 @@
 class MultilayerPerceptron {
 public:
     double learningRate;
-    double bias;
-    std::vector<std::vector<std::vector<double>>> weights;
-    int layerDim;
-    int layerAmt;
+    std::vector<std::vector<double>> inputWeights;
+    std::vector<std::vector<std::vector<double>>> hiddenWeights;
+    std::vector<std::vector<double>> outputWeights;
+    std::vector<std::vector<double>> hiddenBiases;
+    std::vector<std::vector<double>> outputBiases;
+    int hiddenLayerDim;
+    int inputLayerDim;
+    int outputLayerDim;
 
-    MultilayerPerceptron(double initialBias, double initialWeightValue, int layerAmount, int layerDimension, double learningRate);
+    MultilayerPerceptron(double initialBias, 
+                         double initialWeightValue, 
+                         int hiddenLayerDim, 
+                         int inputLayerDim, 
+                         double outputLayerDim, 
+                         double learningRate);
 
     void print(std::string x);
 
@@ -23,7 +32,7 @@ public:
 
     double activationFunction(double x);
 
-    double forward(std::vector<std::vector<std::vector<double>>> inputs);
+    double forward(std::vector<double> inputs);
 
     void train(std::vector<double> x, std::vector<double> y);
 
