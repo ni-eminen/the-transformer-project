@@ -39,3 +39,20 @@ void printMatrix(matrix m, std::string label) {
         std::cout << std::endl;
     }
 }
+
+matrix transpose(matrix A) {
+    int rows = A.size();
+    int cols = A[0].size();
+
+    matrix result;
+
+    for (int i = 0; i<rows; i++) {
+        std::vector<double> newRow;
+        for (int j = 0; j<cols; j++) {
+            newRow.push_back(A[j][i]);
+        }
+        result.push_back(newRow);
+    }
+
+    return result;
+}
