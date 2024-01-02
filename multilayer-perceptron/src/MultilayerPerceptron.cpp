@@ -37,6 +37,7 @@ double MultilayerPerceptron::activationFunction(double x) {
 
 double MultilayerPerceptron::forward(vector<double> inputs) {
     // transpose(this->inputWeights) * inputs_1 = [i_1, ..., i_n] + biases = sum => activation(sum) = inputs_2 => repeat with hidden
+    
     return 1.0;
 }
 
