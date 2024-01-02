@@ -2,12 +2,14 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include "../../utils/LinearAlgebra.hpp"
 #include "../../utils/utils.hpp"
 #include "MultilayerPerceptron.hpp"
 using std::vector;
+using matrix = std::vector<std::vector<double>>;
 
 vector<vector<double>> generateInitialLayerWeights(int layerDimension, int nextLayerDimension, double defaultValue = 1) {
-    vector<vector<double>> weightsInitial(layerDimension, vector<double>(layerDimension, defaultValue));
+    vector<vector<double>> weightsInitial(layerDimension, vector<double>(nextLayerDimension, defaultValue));
     return weightsInitial;
 }
 
@@ -16,17 +18,16 @@ MultilayerPerceptron::MultilayerPerceptron(double initialBias, double initialWei
     this->inputLayerDim = inputLayerDim;
     this->hiddenLayerDim = hiddenLayerDim;
     this->outputLayerDim = outputLayerDim;
-    vector<vector<double>> hiddenBiases(1, vector<double>(hiddenLayerDim, initialBias))
-    vector<double> outputBiases(outputLayerDim, initialBias)
 
-    vector<vector<double>> inputWeights = generateInitialLayerWeights(hiddenLayerDim, hiddenLayerDim, initialWeightValue);
-    vector<vector<vector<double>>> hiddenWeights(hiddenLayerDim-1, generateInitialLayerWeights(hiddenLayerDim, hiddenLayerDim, initialWeightValue));
-    hiddenWeights.push_back(generateInitialLayerWeights(hiddenLayerDim, outputLayerDim));
-}
+    vector<double> hiddenBiases(hiddenLayerDim, initialBias);
+    this->hiddenBiases = hiddenBiases;
+    vector<double> outputBiases(outputLayerDim, initialBias);
+    this->outputBiases = outputBiases;
 
-
-double MultilayerPerceptron::combinationFunction(vector<double> weights, vector<double> inputs, double bias) {
-    return weightedSum(weights, inputs) + bias;
+    this->inputWeights = generateInitialLayerWeights(inputLayerDim, hiddenLayerDim, initialWeightValue);
+    auto hiddenWeights = generateInitialLayerWeights(hiddenLayerDim, outputLayerDim, initialWeightValue);
+    this->hiddenWeights = hiddenWeights;
+    printMatrix(hiddenWeights, "hidden weight after init");
 }
 
 
@@ -35,10 +36,33 @@ double MultilayerPerceptron::activationFunction(double x) {
 }
 
 
-double MultilayerPerceptron::forward(vector<double> inputs) {
-    // transpose(this->inputWeights) * inputs_1 = [i_1, ..., i_n] + biases = sum => activation(sum) = inputs_2 => repeat with hidden
-    
-    return 1.0;
+vector<double> MultilayerPerceptron::forward(vector<double> inputs) {
+    // this->inputWeights * inputs_1 = [i_1, ..., i_n] + biases = sum => activation(sum) = inputs_2 => repeat with hidden
+    vector<double> weightedSums = matMul(inputs, this->inputWeights);
+    printVector(weightedSums, "weighted sums without bias");
+
+
+    vector<double> activated = weightedSums;
+    double weightedSumPlusBias;
+    for (int i = 0; i<weightedSums.size(); i++) {
+        weightedSumPlusBias = weightedSums[i] + this->hiddenBiases[i];
+        activated[i] = this->activationFunction(weightedSumPlusBias);
+    }
+
+    printVector(activated, "Hidden layer output");
+
+    printMatrix(this->hiddenWeights, "hidden weights");
+    vector<double> weightedSums_2 = matMul(activated, this->hiddenWeights);
+
+    printVector(weightedSums_2, "2");
+
+    activated = weightedSums_2;
+    for (int i = 0; i<weightedSums_2.size(); i++) {
+        weightedSumPlusBias = weightedSums[i] + this->outputBiases[i];
+        activated[i] = this->activationFunction(weightedSumPlusBias);
+    }
+
+    return activated;
 }
 
 
