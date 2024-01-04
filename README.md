@@ -3,7 +3,7 @@
 - Provides a foundational understanding of feedforward neural networks.
 - Implementation includes weights, activation functions, loss functions, bias terms, and backpropagation—all from scratch.
 
-# Feed-Forward Neural Network
+# Multilayer Perceptron (Feed-Forward Neural Network)
 - Explores the workings of larger neural networks.
 - Focuses on the implementation of backpropagation within a broader network context.
 - Is comprised of multiple layers of interlinked perceptrons.
