@@ -1,4 +1,4 @@
-# The Percetron
+# The Perceptron
 - Just a perceptron, a single Perceptron capable of binary classification.
 - Provides a foundational understanding of feedforward neural networks.
 - Implementation includes weights, activation functions, loss functions, bias terms, and backpropagation—all from scratch.
