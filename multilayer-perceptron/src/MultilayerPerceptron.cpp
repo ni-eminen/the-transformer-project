@@ -5,8 +5,8 @@
 #include "../../utils/LinearAlgebra.hpp"
 #include "../../utils/utils.hpp"
 #include "MultilayerPerceptron.hpp"
-using std::vector;
-using matrix = std::vector<std::vector<double>>;
+#include "../../utils/Types.hpp"
+
 
 vector<vector<double>> generateInitialLayerWeights(int layerDimension, int nextLayerDimension, double defaultValue = 1) {
     vector<vector<double>> weightsInitial(layerDimension, vector<double>(nextLayerDimension, defaultValue));

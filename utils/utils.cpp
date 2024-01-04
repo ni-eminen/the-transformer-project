@@ -4,8 +4,9 @@
 #include <cfloat>
 #include <cmath>
 #include "utils.hpp"
+#include "Types.hpp"
 
-void printVector(std::vector<double> v, std::string title = "vector") {
+void printVector(vector<double> v, std::string title = "vector") {
     std::cout << std::endl << title << ": [";
     for(double x : v) {
         std::cout << x << ", ";
@@ -13,7 +14,7 @@ void printVector(std::vector<double> v, std::string title = "vector") {
     std::cout << "]" << std::endl;
 }
 
-std::vector<double> replaceZeros(std::vector<double> vec, double replacement) {
+vector<double> replaceZeros(vector<double> vec, double replacement) {
     for(int i = 0; i<vec.size(); i++) {
         if (vec[i] == 0.0) {
             vec[i] = replacement;
@@ -23,7 +24,7 @@ std::vector<double> replaceZeros(std::vector<double> vec, double replacement) {
     return vec;
 }
 
-double binary_cross_entropy(std::vector<double> y, std::vector<double> y_pred) {
+double binary_cross_entropy(vector<double> y, vector<double> y_pred) {
     y = replaceZeros(y, DBL_MIN);
     y_pred = replaceZeros(y_pred, DBL_MIN);
 
@@ -42,7 +43,7 @@ double binary_cross_entropy(std::vector<double> y, std::vector<double> y_pred) {
 
 
 
-double d_binary_cross_entropy(std::vector<double> y, std::vector<double> y_pred) {
+double d_binary_cross_entropy(vector<double> y, vector<double> y_pred) {
     y = replaceZeros(y, DBL_MIN);
     y_pred = replaceZeros(y_pred, DBL_MIN);
 
@@ -68,7 +69,7 @@ double dSigmoid(double x) {
     return sigmoid(x) * (1 - sigmoid(x));
 }
 
-double weightedSum(std::vector<double> weights, std::vector<double> inputs) {
+double weightedSum(vector<double> weights, vector<double> inputs) {
     double result = 0;
 
     for(int i = 0; i<weights.size(); i++) {

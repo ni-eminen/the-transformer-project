@@ -4,23 +4,24 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include "../../utils/Types.hpp"
 
-std::vector<std::vector<double>> generateInitialLayerWeights(int layerDimension, int nextLayerDimension, double defaultValue);
+matrix generateInitialLayerWeights(int layerDimension, int nextLayerDimension, double defaultValue);
 
 class MultilayerPerceptron {
 public:
     double learningRate;
-    std::vector<std::vector<double>> inputWeights;
-    std::vector<std::vector<double>> hiddenWeights;
-    std::vector<std::vector<double>> outputWeights;
-    std::vector<double> hiddenBiases;
-    std::vector<double> outputBiases;
+    matrix inputWeights;
+    matrix hiddenWeights;
+    matrix outputWeights;
+    vector<double> hiddenBiases;
+    vector<double> outputBiases;
     int hiddenLayerDim;
     int inputLayerDim;
     int outputLayerDim;
 
-    std::vector<std::vector<std::vector<double>>> weights;
-    std::vector<std::vector<double>> biases;
+    vector<matrix> weights;
+    matrix biases;
 
     MultilayerPerceptron(double initialBias, 
                          double initialWeightValue, 
@@ -31,15 +32,15 @@ public:
 
     void print(std::string x);
 
-    double combinationFunction(std::vector<double> weights, std::vector<double> inputs);
+    double combinationFunction(vector<double> weights, vector<double> inputs);
 
     double activationFunction(double x);
 
-    std::vector<double> forward(std::vector<double> inputs);
+    vector<double> forward(vector<double> inputs);
 
-    void train(std::vector<double> x, std::vector<double> y);
+    void train(vector<double> x, vector<double> y);
 
-    double lossFunction(std::vector<double> y, std::vector<double> y_pred);
+    double lossFunction(vector<double> y, vector<double> y_pred);
 };
 
 #endif // PERCEPTRON_H

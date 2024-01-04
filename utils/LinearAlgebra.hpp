@@ -1,8 +1,7 @@
 #include <ostream>
 #include <vector>
 #include <string>
-using matrix = std::vector<std::vector<double>>;
-using std::vector;
+#include "Types.hpp"
 
 matrix matMul(matrix A, matrix B);
 vector<double> matMul(std::vector<double> A, matrix B);
