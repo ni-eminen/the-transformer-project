@@ -65,35 +65,42 @@ vector<double> MultilayerPerceptron::forward(vector<double> inputs) {
 
 
 void MultilayerPerceptron::train(vector<double> x, vector<double> y) {
-    // double yPred = forward(x);
+    vector<double> output = this->forward(x);
+    double eTotal = lossFunction(y, output);
+    double eTotalWrtPrediction = d_binary_cross_entropy(y, output);
+    matrix eTotalWrtWeight(this->weights.size(), vector<double>{});
+    matrix eTotalWrtBias(this->weights.size(), vector<double>{});
+    // Traverse the layers backwards
+    for (int layer_i = this->weights.size()-1; layer_i>=0; layer_i++) {
+        // Traverse the neurons on layer_i
+        for (int neuron_i = 0; neuron_i<weights[layer_i].size(); neuron_i++) {
+            // Traverse the weights of neuron_i
+            for (int weight_i = 0; weight_i<weights[layer_i+1].size(); weight_i++) {
+                double eTotalWrtOutput;
+                if (layer_i == this->weights.size() - 1) {
+                    eTotalWrtOutput = eTotalWrtPrediction;
+                } else {
 
-    // double eTotal = this->lossFunction(y, vector<double>{yPred});
+                    eTotalWrtOutput = eTotalWrtWeight[layer_i + 1][weight_i];
+                }
+                matrix outputWrtWeightedSum(this->weights.size(), vector<double>{});
+                matrix weightedSumWrtWeight(this->weights.size(), vector<double>{});
+                double outputWrtWeightedSum = dSigmoid(combinationFunction(weights, x));
+                double weightedSumWrtWeight = outputs[layer_i][neuron_i][weight_i];
+                eTotalWrtWeight[layer_i][neuron_i].push_back(eTotalWrtOutput * outputWrtWeightedSum * weightedSumWrtWeight)
+            }
+            // same for bias term
+            double eTotalWrtPrediction = d_binary_cross_entropy(y, output);
+            double outputWrtWeightedSum = dSigmoid(combinationFunction(weights, x));
+            double weightedSum_wrt_bias = 1;
+            double biasAdjustment = eTotalWrtPrediction * outputWrtWeightedSum * weightedSum_wrt_bias;
+            bias -= learningRate * biasAdjustment;
+            eTotalWrtBias[layer_i].push_back(biasAdjustment);
+        }
 
-    // double* weightAdjustments = new double[weights.size()];
-
-    // // Now we must figure out for each weight, how much the weight contributed to the eTotal
-    // int i = 0;
-    // for (double weight : weights) {
-    //     double eTotal_wrt_yPred = d_binary_cross_entropy(y, vector<double>{yPred});
-    //     double yPred_wrt_weightedSum = dSigmoid(combinationFunction(weights, x) + bias);
-    //     double weightedSum_wrt_weight = x[i];
-
-    //     weightAdjustments[i] = eTotal_wrt_yPred * yPred_wrt_weightedSum * weightedSum_wrt_weight;
-
-    //     weights[i] -= this->learningRate * weightAdjustments[i];
-
-    //     i += 1;
-    // }
-
-    // // same for bias term
-    // double eTotal_wrt_yPred = d_binary_cross_entropy(y, vector<double>{yPred});
-    // double yPred_wrt_weightedSum = dSigmoid(combinationFunction(weights, x));
-    // double weightedSum_wrt_bias = 1;
-    // double biasAdjustment = eTotal_wrt_yPred * yPred_wrt_weightedSum * weightedSum_wrt_bias;
-    // bias -= learningRate * biasAdjustment;
+    }
 }
 
 double MultilayerPerceptron::lossFunction(vector<double> y, vector<double> yPred) {
-    // return binary_cross_entropy(y, yPred);
-    return 1.0;
+    return binary_cross_entropy(y, yPred);
 }

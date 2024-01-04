@@ -119,7 +119,6 @@ void printMatrix(matrix m, std::string label) {
 }
 
 matrix transpose(matrix A) {
-
     int rows = A.size();
     int cols = A[0].size();
     matrix result;
