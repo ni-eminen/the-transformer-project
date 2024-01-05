@@ -78,36 +78,41 @@ void MultilayerPerceptron::train(vector<double> x, vector<double> y) {
     vector<double> output = this->forward(x);
     double eTotal = lossFunction(y, output);
     double eTotalWrtPrediction = d_binary_cross_entropy(y, output);
-    matrix eTotalWrtWeight(this->weights.size(), vector<double>{});
+    vector<vector<vector<double>>> eTotalWrtWeight(this->weights.size(), vector<vector<double>>(1, vector<double>{}));
     matrix eTotalWrtBias(this->weights.size(), vector<double>{});
-    // Traverse the layers backwards
-    for (int layer_i = this->weights.size()-1; layer_i>=0; layer_i++) {
+    // Traverse the layers backwards starting from second to last layer
+    for (int layer_i = this->weights.size()-2; layer_i>=0; layer_i--) {
         // Traverse the neurons on layer_i
         for (int neuron_i = 0; neuron_i<weights[layer_i].size(); neuron_i++) {
             // Traverse the weights of neuron_i
+            double eTotalWrtOutput;
+            double outputWrtWeightedSum;
             for (int weight_i = 0; weight_i<weights[layer_i+1].size(); weight_i++) {
-                double eTotalWrtOutput;
-                if (layer_i == this->weights.size() - 1) {
-                    eTotalWrtOutput = eTotalWrtPrediction;
+                if (layer_i == weights.size() - 2) {
+                    eTotalWrtOutput = d_binary_cross_entropy(y, vector<double>{this->trainingBatchOutputs[layer_i+1][weight_i]});
                 } else {
-
-                    eTotalWrtOutput = eTotalWrtWeight[layer_i + 1][weight_i];
+                    // o is used as iterator variable as it represenths the oth output neuron. 
+                    // o is commonly used to denote the output layer's neurons
+                    for (int o = 0; o<this->outputLayerDim; o++) {
+                        eTotalWrtOutput += d_binary_cross_entropy(y, vector<double>{this->trainingBatchOutputs[this->totalLayerAmt][o]}) * dSigmoid(this->trainingBatchInputs[this->totalLayerAmt][o]) * this->weights[this->totalLayerAmt-2][weight_i][o];
+                    }
                 }
-                matrix outputWrtWeightedSum(this->weights.size(), vector<double>{});
-                matrix weightedSumWrtWeight(this->weights.size(), vector<double>{});
-                double outputWrtWeightedSum = dSigmoid(combinationFunction(weights, x));
-                double weightedSumWrtWeight = outputs[layer_i][neuron_i][weight_i];
-                eTotalWrtWeight[layer_i][neuron_i].push_back(eTotalWrtOutput * outputWrtWeightedSum * weightedSumWrtWeight)
+                // matrix outputWrtWeightedSum(this->weights.size(), vector<double>{});
+                // matrix weightedSumWrtWeight(this->weights.size(), vector<double>{});
+                // outputWrtWeightedSum[layer_i].push_back(dSigmoid(this->trainingBatchInputs[layer_i+1][weight_i]));
+                // weightedSumWrtWeight[layer_i].push_back(this-weights[layer_i][neuron_i][weight_i]);
+
+                outputWrtWeightedSum = dSigmoid(this->trainingBatchInputs[layer_i+1][weight_i]);
+                double weightedSumWrtWeight = this->weights[layer_i][neuron_i][weight_i];
+                
+                eTotalWrtWeight[layer_i][neuron_i].push_back(eTotalWrtOutput * outputWrtWeightedSum * weightedSumWrtWeight);
             }
             // same for bias term
-            double eTotalWrtPrediction = d_binary_cross_entropy(y, output);
-            double outputWrtWeightedSum = dSigmoid(combinationFunction(weights, x));
-            double weightedSum_wrt_bias = 1;
-            double biasAdjustment = eTotalWrtPrediction * outputWrtWeightedSum * weightedSum_wrt_bias;
-            bias -= learningRate * biasAdjustment;
-            eTotalWrtBias[layer_i].push_back(biasAdjustment);
+            // here we need to save each neuron's output to give to dSigmoid
+            // double weightedSum_wrt_bias = 1;
+            // double biasAdjustment = eTotalWrtOutput * outputWrtWeightedSum * weightedSum_wrt_bias;
+            // eTotalWrtBias[layer_i].push_back(biasAdjustment);
         }
-
     }
 }
 
