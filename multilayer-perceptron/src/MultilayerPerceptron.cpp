@@ -50,16 +50,24 @@ double MultilayerPerceptron::activationFunction(double x) {
 
 
 vector<double> MultilayerPerceptron::forward(vector<double> inputs) {
+    matrix trainingBatchInputs(this->weights.size());
+    matrix trainingBatchOutputs(this->weights.size());
+    this->trainingBatchInputs = trainingBatchInputs;
+    this->trainingBatchOutputs = trainingBatchOutputs;
+
     vector<double> outputs = inputs;
     double weightedSumsPlusBias;
     for (int layer_i = 0; layer_i<this->weights.size(); layer_i++) {
         vector<double> weightedSums = matMul(outputs, this->weights[layer_i]);
-        outputs = weightedSums;
+
+        vector weightedSumPlusBias = elementWiseSum(weightedSums, this->biases[layer_i]);
 
         for (int neuron_i = 0; neuron_i<weightedSums.size(); neuron_i++) {
-            weightedSumsPlusBias = weightedSums[neuron_i] + this->biases[layer_i][neuron_i];
-            outputs[neuron_i] = this->activationFunction(weightedSumsPlusBias);
+            outputs[neuron_i] = this->activationFunction(weightedSumPlusBias[neuron_i]);
         }
+        // Saving these for backpropagation
+        this->trainingBatchInputs.push_back(weightedSumPlusBias);
+        this->trainingBatchOutputs.push_back(outputs);
     }
 
     return outputs;
