@@ -21,5 +21,5 @@ mlp:
 	g++ -c ${MLP_SRC}/MultilayerPerceptron.cpp
 	g++ -c ${UTILS}/utils.cpp
 	g++ -c ${MLP_SRC}/main.cpp
-	g++ -o ${MLP_X} main.o utils.o MultilayerPerceptron.o LinearAlgebra.o
+	g++ -o ${MLP_X} -g main.o utils.o MultilayerPerceptron.o LinearAlgebra.o
 	${MLP_X}
