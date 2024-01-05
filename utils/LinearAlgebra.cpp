@@ -134,3 +134,11 @@ matrix transpose(matrix A) {
 
     return result;
 }
+
+vector<double> elementWiseSum(vector<double> a, vector<double> b) {
+    vector<double> result;
+    for (int i = 0; i<a.size(); i++) {
+        result.push_back(a[i] + b[i]);
+    }
+    return result;
+}
