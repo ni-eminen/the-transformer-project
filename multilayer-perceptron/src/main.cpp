@@ -2,7 +2,7 @@
 #include <vector>
 #include "MultilayerPerceptron.hpp"
 #include "../../utils/utils.hpp"
-#include "../../utils/types.hpp"
+#include "../../utils/Types.hpp"
 
 
 int main(int argc, char *argv[])
