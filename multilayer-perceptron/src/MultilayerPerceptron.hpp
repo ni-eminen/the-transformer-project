@@ -14,11 +14,15 @@ public:
     matrix inputWeights;
     matrix hiddenWeights;
     matrix outputWeights;
+    matrix trainingBatchOutputs;
+    matrix trainingBatchInputs;
+
     vector<double> hiddenBiases;
     vector<double> outputBiases;
     int hiddenLayerDim;
     int inputLayerDim;
     int outputLayerDim;
+    int totalLayerAmt;
 
     vector<matrix> weights;
     matrix biases;
