@@ -39,6 +39,8 @@ MultilayerPerceptron::MultilayerPerceptron(double initialBias, double initialWei
     biases.push_back(this->hiddenBiases);
     biases.push_back(this->outputBiases);
     this->biases = biases;
+
+    this->totalLayerAmt = this->weights.size();
 }
 
 
