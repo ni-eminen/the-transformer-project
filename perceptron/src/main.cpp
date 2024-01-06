@@ -31,7 +31,6 @@ int main(int argc, char *argv[])
         std::cout << "pred: " << round(pred) << std::endl;
     }
 
-    printVector(perceptron.weights, "Weights after training");
     std::cout << perceptron.bias << std::endl;
 
     return 0;

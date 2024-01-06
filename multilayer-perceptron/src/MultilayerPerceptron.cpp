@@ -21,7 +21,6 @@ vector<vector<double> > generateInitialLayerWeights(int layerDimension, int next
             weightsInitial[j].push_back(r);
         }
     }
-    printVector(weightsInitial, "weights");
     return weightsInitial;
 }
 
@@ -98,7 +97,7 @@ vector<double> MultilayerPerceptron::forward(vector<double> inputs)
     return outputs;
 }
 
-std::vector<std::vector<double> > MultilayerPerceptron::train(vector<double> x, vector<double> y)
+void MultilayerPerceptron::train(vector<double> x, vector<double> y)
 {
     vector<double> output = this->forward(x);
     double eTotal = lossFunction(y, output);

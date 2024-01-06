@@ -95,5 +95,6 @@ vector<double> elementWiseSum(vector<double> a, vector<double> b)
     {
         result.push_back(a[i] + b[i]);
     }
+
     return result;
 }
