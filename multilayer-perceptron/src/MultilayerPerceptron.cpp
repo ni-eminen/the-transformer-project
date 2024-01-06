@@ -9,6 +9,7 @@
 #include "utils.hpp"
 #include "MultilayerPerceptron.hpp"
 #include "Types.hpp"
+#include "stdlib.h"
 
 vector<vector<double> > generateInitialLayerWeights(int layerDimension, int nextLayerDimension)
 {
