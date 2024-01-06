@@ -4,18 +4,19 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
-#include "../../utils/Types.hpp"
+#include "Types.hpp"
 
-matrix generateInitialLayerWeights(int layerDimension, int nextLayerDimension, double defaultValue);
+vector<vector<double> > generateInitialLayerWeights(int layerDimension, int nextLayerDimension, double defaultValue);
 
-class MultilayerPerceptron {
+class MultilayerPerceptron
+{
 public:
     double learningRate;
-    matrix inputWeights;
-    matrix hiddenWeights;
-    matrix outputWeights;
-    matrix trainingBatchOutputs;
-    matrix trainingBatchInputs;
+    vector<vector<double> > inputWeights;
+    vector<vector<double> > hiddenWeights;
+    vector<vector<double> > outputWeights;
+    vector<vector<double> > forwardOuts;
+    vector<vector<double> > forwardIns;
 
     vector<double> hiddenBiases;
     vector<double> outputBiases;
@@ -24,14 +25,14 @@ public:
     int outputLayerDim;
     int totalLayerAmt;
 
-    vector<matrix> weights;
-    matrix biases;
+    vector<vector<vector<double> > > weights;
+    vector<vector<double> > biases;
 
-    MultilayerPerceptron(double initialBias, 
-                         double initialWeightValue, 
-                         int hiddenLayerDim, 
-                         int inputLayerDim, 
-                         int outputLayerDim, 
+    MultilayerPerceptron(double initialBias,
+                         double initialWeightValue,
+                         int hiddenLayerDim,
+                         int inputLayerDim,
+                         int outputLayerDim,
                          double learningRate);
 
     void print(std::string x);

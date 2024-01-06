@@ -7,19 +7,19 @@
 #include <chrono>
 using namespace std::chrono;
 
-using matrix = std::vector<std::vector<double>>;
+using vector<vector<double> > = std::vector<std::vector<double>>;
 
 
 
 int main(int argc, char *argv[])
 {
-    matrix A = matrix(3, std::vector<double>{1,2,3});
-    matrix B = matrix(3, std::vector<double>{1,2,3});
-    matrix C = matMul(A, B);
+    vector<vector<double> > A = vector<vector<double> >(3, std::vector<double>{1,2,3});
+    vector<vector<double> > B = vector<vector<double> >(3, std::vector<double>{1,2,3});
+    vector<vector<double> > C = matMul(A, B);
     
-    printMatrix(C, "C");
+    printvector<vector<double> >(C, "C");
     
-    printMatrix(transpose(C), "C transposed");
+    printvector<vector<double> >(transpose(C), "C transposed");
 
 
     return 0;

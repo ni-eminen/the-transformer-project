@@ -5,8 +5,10 @@
 #include <vector>
 #include <string>
 #include <cfloat>
+#include "Types.hpp"
 
-void printVector(std::vector<double> v, std::string title);
+void printVector(vector<double> v, std::string title);
+void printMatrix(vector<vector<double> > A, std::string title);
 
 std::vector<double> replaceZeros(std::vector<double> vec, double replacement);
 
