@@ -133,19 +133,38 @@ void MultilayerPerceptron::train(vector<double> x, vector<double> y)
                 // outputWrtWeightedSum[layer_i].push_back(dSigmoid(this->trainingBatchInputs[layer_i+1][weight_i]));
                 // weightedSumWrtWeight[layer_i].push_back(this-weights[layer_i][neuron_i][weight_i]);
 
-                outputWrtWeightedSum = dSigmoid(this->forwardIns[layer_i][weight_i]);
-                double weightedSumWrtWeight = this->weights[layer_i][neuron_i][weight_i];
+                outputWrtWeightedSum = dSigmoid(this->forwardIns[layer_i + 1][weight_i]);
+                double weightedSumWrtWeight = this->forwardOuts[layer_i][neuron_i];
                 eTotalWrtWeight[layer_i][neuron_i].push_back(eTotalWrtOutput * outputWrtWeightedSum * weightedSumWrtWeight);
             }
-            // same for bias term
-            // here we need to save each neuron's output to give to dSigmoid
-            double weightedSum_wrt_bias = 1;
-            double biasAdjustment = eTotalWrtOutput * outputWrtWeightedSum * weightedSum_wrt_bias;
-            eTotalWrtBias[layer_i].push_back(biasAdjustment);
+            // Bias
+            if (layer_i == weights.size() - 1)
+            {
+                eTotalWrtOutput = d_binary_cross_entropy(y, this->forwardOuts[layer_i + 1]);
+            }
+            else
+            {
+                for (int o = 0; o < this->outputLayerDim; o++)
+                {
+                    eTotalWrtOutput += d_binary_cross_entropy(y, vector<double>(1, this->forwardOuts[this->totalLayerAmt][o])) * dSigmoid(this->forwardIns[this->totalLayerAmt][o]) * this->weights[this->totalLayerAmt - 1][neuron_i][o];
+                }
+            }
+            outputWrtWeightedSum = dSigmoid(this->forwardIns[layer_i][neuron_i]);
+            eTotalWrtBias[layer_i].push_back(eTotalWrtOutput * outputWrtWeightedSum);
         }
     }
 
-    return eTotalWrtBias;
+    for (int layer_i = 0; layer_i < this->weights.size(); layer_i++)
+    {
+        for (int neuron_i = 0; neuron_i < this->weights[layer_i].size(); neuron_i++)
+        {
+            for (int weight_i = 0; weight_i < this->weights[layer_i][neuron_i].size(); weight_i++)
+            {
+                this->weights[layer_i][neuron_i][weight_i] -= this->learningRate * eTotalWrtWeight[layer_i][neuron_i][weight_i];
+            }
+            this->biases[layer_i][neuron_i] -= this->learningRate * eTotalWrtBias[layer_i][neuron_i];
+        }
+    }
 }
 
 double MultilayerPerceptron::lossFunction(vector<double> y, vector<double> yPred)
