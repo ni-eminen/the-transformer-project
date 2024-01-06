@@ -14,19 +14,21 @@ int main(int argc, char *argv[])
     double learningRate = .5;
 
     vector<vector<double> > X = vector<vector<double> >{{1, 1}, {1, 0}, {0, 1}, {0, 0}};
-    vector<vector<double> > y = vector<vector<double> >{{1}, {1}, {1}, {0}};
+    vector<vector<double> > y = vector<vector<double> >{{1}, {0}, {0}, {0}};
     MultilayerPerceptron mlp = MultilayerPerceptron(initialBias, initialWeightValue, hiddenLayerDim, inputLayerDim, outputLayerDim, learningRate);
 
-    printMatrix(mlp.train(X[0], y[0]), "bias adjustments");
-
     // Training
-    // for (int i = 0; i < 10000; i++)
-    // {
-    //     for (int j = 0; j < X.size(); j++)
-    //     {
-    //         mlp.train(X[j], y[j]);
-    //     }
-    // }
+    for (int i = 0; i < 1000; i++)
+    {
+        for (int j = 0; j < X.size(); j++)
+            mlp.train(X[j], y[j]);
+    }
+
+    // Results
+    for (int i = 0; i < X.size(); i++)
+    {
+        std::cout << mlp.forward(X[i])[0] << std::endl;
+    }
 
     return 0;
 }
