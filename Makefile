@@ -17,9 +17,12 @@ p:
 	${P_X}
 
 mlp:
-	g++ -c ${UTILS}/LinearAlgebra.cpp
-	g++ -c ${MLP_SRC}/MultilayerPerceptron.cpp
-	g++ -c ${UTILS}/utils.cpp
-	g++ -c ${MLP_SRC}/main.cpp
-	g++ -o ${MLP_X} -g main.o utils.o MultilayerPerceptron.o LinearAlgebra.o
+	g++ -I ./utils -g -c ${UTILS}/LinearAlgebra.cpp
+	g++ -I ./utils -g -c ${MLP_SRC}/MultilayerPerceptron.cpp
+	g++ -I ./utils -g -c ${UTILS}/utils.cpp
+	g++ -I ./utils -g -c ${MLP_SRC}/main.cpp
+	g++ -I ./utils -o ${MLP_X} -g main.o utils.o MultilayerPerceptron.o LinearAlgebra.o
 	${MLP_X}
+
+dmlp:
+	gdb ${MLP_X}
