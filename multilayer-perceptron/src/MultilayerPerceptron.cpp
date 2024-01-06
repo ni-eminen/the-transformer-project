@@ -2,18 +2,20 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
-#include "../../utils/LinearAlgebra.hpp"
-#include "../../utils/utils.hpp"
+#include <stdexcept>
+#include "LinearAlgebra.hpp"
+#include "utils.hpp"
 #include "MultilayerPerceptron.hpp"
-#include "../../utils/Types.hpp"
+#include "Types.hpp"
 
-
-vector<vector<double>> generateInitialLayerWeights(int layerDimension, int nextLayerDimension, double defaultValue = 1) {
-    vector<vector<double>> weightsInitial(layerDimension, vector<double>(nextLayerDimension, defaultValue));
+vector<vector<double> > generateInitialLayerWeights(int layerDimension, int nextLayerDimension, double defaultValue = 1)
+{
+    vector<vector<double> > weightsInitial(layerDimension, vector<double>(nextLayerDimension, defaultValue));
     return weightsInitial;
 }
 
-MultilayerPerceptron::MultilayerPerceptron(double initialBias, double initialWeightValue, int hiddenLayerDim, int inputLayerDim, int outputLayerDim, double learningRate) {
+MultilayerPerceptron::MultilayerPerceptron(double initialBias, double initialWeightValue, int hiddenLayerDim, int inputLayerDim, int outputLayerDim, double learningRate)
+{
     this->learningRate = learningRate;
     this->inputLayerDim = inputLayerDim;
     this->hiddenLayerDim = hiddenLayerDim;
@@ -25,17 +27,17 @@ MultilayerPerceptron::MultilayerPerceptron(double initialBias, double initialWei
     this->outputBiases = outputBiases;
 
     this->inputWeights = generateInitialLayerWeights(inputLayerDim, hiddenLayerDim, initialWeightValue);
-    auto hiddenWeights = generateInitialLayerWeights(hiddenLayerDim, outputLayerDim, initialWeightValue);
+    vector<vector<double> > hiddenWeights = generateInitialLayerWeights(hiddenLayerDim, outputLayerDim, initialWeightValue);
     this->hiddenWeights = hiddenWeights;
 
     // All weights in one 3d vector
-    vector<vector<vector<double>>> weights;
+    vector<vector<vector<double> > > weights;
     weights.push_back(this->inputWeights);
     weights.push_back(this->hiddenWeights);
     this->weights = weights;
 
     // All biases in one 2d vector
-    vector<vector<double>> biases;
+    vector<vector<double> > biases;
     biases.push_back(this->hiddenBiases);
     biases.push_back(this->outputBiases);
     this->biases = biases;
@@ -116,6 +118,7 @@ void MultilayerPerceptron::train(vector<double> x, vector<double> y) {
     }
 }
 
-double MultilayerPerceptron::lossFunction(vector<double> y, vector<double> yPred) {
+double MultilayerPerceptron::lossFunction(vector<double> y, vector<double> yPred)
+{
     return binary_cross_entropy(y, yPred);
 }
