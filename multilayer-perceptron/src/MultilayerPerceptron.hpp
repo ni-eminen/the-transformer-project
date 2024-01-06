@@ -43,7 +43,7 @@ public:
 
     vector<double> forward(vector<double> inputs);
 
-    void train(vector<double> x, vector<double> y);
+    std::vector<std::vector<double> > train(vector<double> x, vector<double> y);
 
     double lossFunction(vector<double> y, vector<double> y_pred);
 };

@@ -3,14 +3,25 @@
 #include <vector>
 #include <cmath>
 #include <stdexcept>
+#include <time.h>
+#include <iostream>
 #include "LinearAlgebra.hpp"
 #include "utils.hpp"
 #include "MultilayerPerceptron.hpp"
 #include "Types.hpp"
 
-vector<vector<double> > generateInitialLayerWeights(int layerDimension, int nextLayerDimension, double defaultValue = 1)
+vector<vector<double> > generateInitialLayerWeights(int layerDimension, int nextLayerDimension)
 {
-    vector<vector<double> > weightsInitial(layerDimension, vector<double>(nextLayerDimension, defaultValue));
+    vector<vector<double> > weightsInitial(layerDimension, vector<double>());
+    for (int j = 0; j < weightsInitial.size(); j++)
+    {
+        for (int i = 0; i < nextLayerDimension; i++)
+        {
+            double r = ((double)rand() / (RAND_MAX));
+            weightsInitial[j].push_back(r);
+        }
+    }
+    printVector(weightsInitial, "weights");
     return weightsInitial;
 }
 
@@ -26,8 +37,8 @@ MultilayerPerceptron::MultilayerPerceptron(double initialBias, double initialWei
     vector<double> outputBiases(outputLayerDim, initialBias);
     this->outputBiases = outputBiases;
 
-    this->inputWeights = generateInitialLayerWeights(inputLayerDim, hiddenLayerDim, initialWeightValue);
-    vector<vector<double> > hiddenWeights = generateInitialLayerWeights(hiddenLayerDim, outputLayerDim, initialWeightValue);
+    this->inputWeights = generateInitialLayerWeights(inputLayerDim, hiddenLayerDim);
+    vector<vector<double> > hiddenWeights = generateInitialLayerWeights(hiddenLayerDim, outputLayerDim);
     this->hiddenWeights = hiddenWeights;
 
     // All weights in one 3d vector
@@ -87,7 +98,7 @@ vector<double> MultilayerPerceptron::forward(vector<double> inputs)
     return outputs;
 }
 
-void MultilayerPerceptron::train(vector<double> x, vector<double> y)
+std::vector<std::vector<double> > MultilayerPerceptron::train(vector<double> x, vector<double> y)
 {
     vector<double> output = this->forward(x);
     double eTotal = lossFunction(y, output);
@@ -105,10 +116,8 @@ void MultilayerPerceptron::train(vector<double> x, vector<double> y)
             double outputWrtWeightedSum;
             for (int weight_i = 0; weight_i < this->forwardOuts[layer_i + 1].size(); weight_i++)
             {
-                std::cout << layer_i << neuron_i << weight_i << std::endl;
                 if (layer_i == weights.size() - 1)
                 {
-
                     eTotalWrtOutput = d_binary_cross_entropy(y, this->forwardOuts[layer_i + 1]);
                 }
                 else
@@ -131,11 +140,13 @@ void MultilayerPerceptron::train(vector<double> x, vector<double> y)
             }
             // same for bias term
             // here we need to save each neuron's output to give to dSigmoid
-            // double weightedSum_wrt_bias = 1;
-            // double biasAdjustment = eTotalWrtOutput * outputWrtWeightedSum * weightedSum_wrt_bias;
-            // eTotalWrtBias[layer_i].push_back(biasAdjustment);
+            double weightedSum_wrt_bias = 1;
+            double biasAdjustment = eTotalWrtOutput * outputWrtWeightedSum * weightedSum_wrt_bias;
+            eTotalWrtBias[layer_i].push_back(biasAdjustment);
         }
     }
+
+    return eTotalWrtBias;
 }
 
 double MultilayerPerceptron::lossFunction(vector<double> y, vector<double> yPred)

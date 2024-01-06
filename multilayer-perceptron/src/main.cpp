@@ -16,7 +16,8 @@ int main(int argc, char *argv[])
     vector<vector<double> > X = vector<vector<double> >{{1, 1}, {1, 0}, {0, 1}, {0, 0}};
     vector<vector<double> > y = vector<vector<double> >{{1}, {1}, {1}, {0}};
     MultilayerPerceptron mlp = MultilayerPerceptron(initialBias, initialWeightValue, hiddenLayerDim, inputLayerDim, outputLayerDim, learningRate);
-    mlp.train(X[0], y[0]);
+
+    printMatrix(mlp.train(X[0], y[0]), "bias adjustments");
 
     // Training
     // for (int i = 0; i < 10000; i++)
@@ -26,9 +27,6 @@ int main(int argc, char *argv[])
     //         mlp.train(X[j], y[j]);
     //     }
     // }
-
-    vector<double> outputs = mlp.forward(vector<double>{-100, 0, 10, 4});
-    printVector(outputs, "output");
 
     return 0;
 }
