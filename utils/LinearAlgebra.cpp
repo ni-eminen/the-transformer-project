@@ -69,6 +69,16 @@ void printVector(vector<vector<double> > m, std::string label)
     }
 }
 
+vector<vector<double> > axbVector(int a, int b)
+{
+    vector<vector<double> > result;
+    for (int i = 0; i < a; i++)
+    {
+        result.push_back(vector<double>(b, 0));
+    }
+    return result;
+}
+
 vector<vector<double> > transpose(vector<vector<double> > A)
 {
     int rows = A.size();

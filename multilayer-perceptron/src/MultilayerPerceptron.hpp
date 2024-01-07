@@ -17,6 +17,7 @@ public:
     vector<vector<double> > outputWeights;
     vector<vector<double> > forwardOuts;
     vector<vector<double> > forwardIns;
+    vector<vector<double> > star;
 
     vector<double> hiddenBiases;
     vector<double> outputBiases;

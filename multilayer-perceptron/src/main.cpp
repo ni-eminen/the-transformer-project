@@ -6,7 +6,7 @@
 
 int main(int argc, char *argv[])
 {
-    int hiddenLayerDim = 24;
+    int hiddenLayerDim = 10;
     int inputLayerDim = 2;
     int outputLayerDim = 1;
     double initialBias = 1;
@@ -14,11 +14,11 @@ int main(int argc, char *argv[])
     double learningRate = .02;
 
     vector<vector<double> > X = vector<vector<double> >{{0, 0}, {1, 0}, {0, 1}, {1, 1}};
-    vector<vector<double> > y = vector<vector<double> >{{1}, {1}, {0}, {1}};
+    vector<vector<double> > y = vector<vector<double> >{{1}, {0}, {0}, {1}};
 
     MultilayerPerceptron mlp = MultilayerPerceptron(initialBias, initialWeightValue, hiddenLayerDim, inputLayerDim, outputLayerDim, learningRate);
-    // Training
 
+    // Training
     for (int i = 0; i < 10; i++)
     {
         for (int i = 0; i < 10000; i++)
@@ -31,11 +31,9 @@ int main(int argc, char *argv[])
         std::cout << "-----------" << std::endl;
         for (int i = 0; i < X.size(); i++)
         {
-            std::cout << round(mlp.forward(X[i])[0]) << std::endl;
+            std::cout << mlp.forward(X[i])[0] << std::endl;
         }
     }
-
-    // Results
 
     return 0;
 }

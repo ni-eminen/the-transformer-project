@@ -12,3 +12,5 @@ vector<vector<double> > transpose(vector<vector<double> > A);
 vector<double> elementWiseSum(vector<double> a, vector<double> b);
 
 void printVector(vector<vector<double> > m, std::string label);
+
+vector<vector<double> > axbVector(int a, int b);
