@@ -33,25 +33,27 @@ MultilayerPerceptron::MultilayerPerceptron(vector<int> networkSpecs, double init
     this->outputLayerDim = networkSpecs[networkSpecs.size() - 1];
     this->hiddenLayerAmount = networkSpecs.size() - 2;
 
-    vector<double> hiddenBiases(hiddenLayerDim, initialBias);
+    vector<vector<double> > hiddenBiases(hiddenLayerAmount, vector<double>(hiddenLayerDim, initialBias));
     this->hiddenBiases = hiddenBiases;
     vector<double> outputBiases(outputLayerDim, initialBias);
     this->outputBiases = outputBiases;
 
     this->inputWeights = generateInitialLayerWeights(inputLayerDim, hiddenLayerDim);
-    vector<vector<double> > hiddenWeights = generateInitialLayerWeights(hiddenLayerDim, outputLayerDim);
+    vector<vector<vector<double> > > hiddenWeights;
+    for (int i = 0; i < hiddenLayerAmount; i++)
+        hiddenWeights.push_back(generateInitialLayerWeights(hiddenLayerDim, outputLayerDim));
     this->hiddenWeights = hiddenWeights;
 
     // All weights in one 3d vector
     vector<vector<vector<double> > > weights;
     weights.push_back(this->inputWeights);
-    weights.push_back(this->hiddenWeights);
+    weights.insert(weights.end(), this->hiddenWeights.begin(), this->hiddenWeights.end());
     this->weights = weights;
 
     // All biases in one 2d vector
     vector<vector<double> > biases;
     biases.push_back(this->outputBiases);
-    biases.push_back(this->hiddenBiases);
+    biases.insert(biases.end(), this->hiddenBiases.begin(), this->hiddenBiases.end());
     this->biases = biases;
 
     this->star = star;

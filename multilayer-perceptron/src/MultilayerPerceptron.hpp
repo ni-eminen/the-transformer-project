@@ -13,13 +13,13 @@ class MultilayerPerceptron
 public:
     double learningRate;
     vector<vector<double> > inputWeights;
-    vector<vector<double> > hiddenWeights;
+    vector<vector<vector<double> > > hiddenWeights;
     vector<vector<double> > outputWeights;
     vector<vector<double> > forwardOuts;
     vector<vector<double> > forwardIns;
     vector<vector<double> > star;
 
-    vector<double> hiddenBiases;
+    vector<vector<double> > hiddenBiases;
     vector<double> outputBiases;
     int hiddenLayerAmount;
     int hiddenLayerDim;
