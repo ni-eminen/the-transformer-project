@@ -25,35 +25,39 @@ vector<vector<double> > generateInitialLayerWeights(int layerDimension, int next
     return weightsInitial;
 }
 
-MultilayerPerceptron::MultilayerPerceptron(double initialBias, double initialWeightValue, int hiddenLayerDim, int inputLayerDim, int outputLayerDim, double learningRate)
+MultilayerPerceptron::MultilayerPerceptron(vector<int> networkSpecs, double initialBias, double initialWeightValue, double learningRate)
 {
     this->learningRate = learningRate;
-    this->inputLayerDim = inputLayerDim;
-    this->hiddenLayerDim = hiddenLayerDim;
-    this->outputLayerDim = outputLayerDim;
+    this->inputLayerDim = networkSpecs[0];
+    this->hiddenLayerDim = networkSpecs[1];
+    this->outputLayerDim = networkSpecs[networkSpecs.size() - 1];
+    this->hiddenLayerAmount = networkSpecs.size() - 2;
 
-    vector<double> hiddenBiases(hiddenLayerDim, initialBias);
-    this->hiddenBiases = hiddenBiases;
+    vector<vector<double> > hiddenBiases(hiddenLayerAmount, vector<double>(hiddenLayerDim, initialBias));
     vector<double> outputBiases(outputLayerDim, initialBias);
     this->outputBiases = outputBiases;
 
     this->inputWeights = generateInitialLayerWeights(inputLayerDim, hiddenLayerDim);
-    vector<vector<double> > hiddenWeights = generateInitialLayerWeights(hiddenLayerDim, outputLayerDim);
-    this->hiddenWeights = hiddenWeights;
+    vector<vector<vector<double> > > hiddenWeights;
+    for (int i = 0; i < hiddenLayerAmount; i++)
+        hiddenWeights.push_back(generateInitialLayerWeights(networkSpecs[i + 1], networkSpecs[i + 2]));
 
     // All weights in one 3d vector
     vector<vector<vector<double> > > weights;
     weights.push_back(this->inputWeights);
-    weights.push_back(this->hiddenWeights);
+    for (int i = 0; i < hiddenWeights.size(); i++)
+        weights.push_back(hiddenWeights[i]);
     this->weights = weights;
 
     // All biases in one 2d vector
     vector<vector<double> > biases;
     biases.push_back(this->outputBiases);
-    biases.push_back(this->hiddenBiases);
+    for (int i = 0; i < hiddenBiases.size(); i++)
+    {
+        biases.push_back(hiddenBiases[i]);
+    }
     this->biases = biases;
 
-    this->star = star;
     this->totalLayerAmt = this->weights.size();
 }
 
@@ -105,7 +109,7 @@ void MultilayerPerceptron::train(vector<double> x, vector<double> y)
     double eTotal = lossFunction(y, output);
     double eTotalWrtPrediction = d_binary_cross_entropy(y, output);
     vector<vector<vector<double> > > eTotalWrtWeight(this->weights.size(), vector<vector<double> >(hiddenLayerDim, vector<double>()));
-    this->star = axbVector(this->totalLayerAmt, this->hiddenLayerDim);
+    vector<vector<double> > star = axbVector(this->totalLayerAmt, this->hiddenLayerDim);
     vector<vector<double> > eTotalWrtBias(this->weights.size(), vector<double>());
     // Traverse the layers backwards starting from second to last layer
     for (int layer_i = this->weights.size() - 1; layer_i >= 0; layer_i--)
@@ -128,7 +132,7 @@ void MultilayerPerceptron::train(vector<double> x, vector<double> y)
                     // o is commonly used to denote the output layer's neurons
                     for (int o = 0; o < this->outputLayerDim; o++)
                     {
-                        eTotalWrtOutput += this->star[layer_i + 1][o] * this->weights[this->totalLayerAmt - 1][weight_i][o];
+                        eTotalWrtOutput += star[layer_i + 1][o] * this->weights[this->totalLayerAmt - 1][weight_i][o];
                     }
                 }
 
@@ -136,7 +140,7 @@ void MultilayerPerceptron::train(vector<double> x, vector<double> y)
                 double weightedSumWrtWeight = this->forwardOuts[layer_i][neuron_i];
 
                 eTotalWrtWeight[layer_i][neuron_i].push_back(eTotalWrtOutput * outputWrtWeightedSum * weightedSumWrtWeight);
-                this->star[layer_i][neuron_i] += eTotalWrtOutput * outputWrtWeightedSum;
+                star[layer_i][neuron_i] += eTotalWrtOutput * outputWrtWeightedSum;
             }
             // Bias
             if (layer_i == weights.size() - 1)

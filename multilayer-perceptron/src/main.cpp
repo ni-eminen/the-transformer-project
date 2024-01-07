@@ -11,12 +11,13 @@ int main(int argc, char *argv[])
     int outputLayerDim = 1;
     double initialBias = 1;
     double initialWeightValue = 1;
-    double learningRate = .02;
+    double learningRate = .01;
+    vector<int> networkSpecs = vector<int>{2, 4, 4, 1};
 
     vector<vector<double> > X = vector<vector<double> >{{0, 0}, {1, 0}, {0, 1}, {1, 1}};
     vector<vector<double> > y = vector<vector<double> >{{1}, {0}, {0}, {1}};
 
-    MultilayerPerceptron mlp = MultilayerPerceptron(initialBias, initialWeightValue, hiddenLayerDim, inputLayerDim, outputLayerDim, learningRate);
+    MultilayerPerceptron mlp = MultilayerPerceptron(networkSpecs, initialBias, initialWeightValue, learningRate);
 
     // Training
     for (int i = 0; i < 10; i++)
@@ -34,6 +35,9 @@ int main(int argc, char *argv[])
             std::cout << mlp.forward(X[i])[0] << std::endl;
         }
     }
+
+    printMatrix(mlp.weights[1]);
+    // printMatrix(mlp.weights[2]);
 
     return 0;
 }

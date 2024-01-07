@@ -13,27 +13,24 @@ class MultilayerPerceptron
 public:
     double learningRate;
     vector<vector<double> > inputWeights;
-    vector<vector<double> > hiddenWeights;
+    vector<vector<vector<double> > > hiddenWeights;
     vector<vector<double> > outputWeights;
     vector<vector<double> > forwardOuts;
     vector<vector<double> > forwardIns;
-    vector<vector<double> > star;
 
-    vector<double> hiddenBiases;
+    vector<vector<double> > hiddenBiases;
     vector<double> outputBiases;
     int hiddenLayerDim;
     int inputLayerDim;
     int outputLayerDim;
     int totalLayerAmt;
-
+    int hiddenLayerAmount;
     vector<vector<vector<double> > > weights;
     vector<vector<double> > biases;
 
-    MultilayerPerceptron(double initialBias,
+    MultilayerPerceptron(vector<int> networkSpecs,
+                         double initialBias,
                          double initialWeightValue,
-                         int hiddenLayerDim,
-                         int inputLayerDim,
-                         int outputLayerDim,
                          double learningRate);
 
     void print(std::string x);
