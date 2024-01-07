@@ -25,12 +25,13 @@ vector<vector<double> > generateInitialLayerWeights(int layerDimension, int next
     return weightsInitial;
 }
 
-MultilayerPerceptron::MultilayerPerceptron(double initialBias, double initialWeightValue, int hiddenLayerDim, int inputLayerDim, int outputLayerDim, double learningRate)
+MultilayerPerceptron::MultilayerPerceptron(vector<int> networkSpecs, double initialBias, double initialWeightValue, double learningRate)
 {
     this->learningRate = learningRate;
-    this->inputLayerDim = inputLayerDim;
-    this->hiddenLayerDim = hiddenLayerDim;
-    this->outputLayerDim = outputLayerDim;
+    this->inputLayerDim = networkSpecs[0];
+    this->hiddenLayerDim = networkSpecs[1];
+    this->outputLayerDim = networkSpecs[networkSpecs.size() - 1];
+    this->hiddenLayerAmount = networkSpecs.size() - 2;
 
     vector<double> hiddenBiases(hiddenLayerDim, initialBias);
     this->hiddenBiases = hiddenBiases;

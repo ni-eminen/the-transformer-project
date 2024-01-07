@@ -21,6 +21,7 @@ public:
 
     vector<double> hiddenBiases;
     vector<double> outputBiases;
+    int hiddenLayerAmount;
     int hiddenLayerDim;
     int inputLayerDim;
     int outputLayerDim;
@@ -29,11 +30,9 @@ public:
     vector<vector<vector<double> > > weights;
     vector<vector<double> > biases;
 
-    MultilayerPerceptron(double initialBias,
+    MultilayerPerceptron(vector<int> networkSpecs,
+                         double initialBias,
                          double initialWeightValue,
-                         int hiddenLayerDim,
-                         int inputLayerDim,
-                         int outputLayerDim,
                          double learningRate);
 
     void print(std::string x);
