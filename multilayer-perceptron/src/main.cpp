@@ -10,10 +10,30 @@ int main(int argc, char *argv[])
     double initialBias = 1;
     double initialWeightValue = 1;
     double learningRate = .01;
-    vector<int> networkSpecs = vector<int>{2, 4, 4, 1};
+    vector<int> networkSpecs = vector<int>{3, 4, 4, 4, 1};
 
-    vector<vector<double> > X = vector<vector<double> >{{0, 0}, {1, 0}, {0, 1}, {1, 1}};
-    vector<vector<double> > y = vector<vector<double> >{{1}, {0}, {0}, {1}};
+    vector<vector<double> > X = vector<vector<double> >{
+        {0, 0, 0},
+        {0, 1, 0},
+        {0, 0, 1},
+        {1, 0, 0},
+        {1, 1, 0},
+        {1, 0, 1},
+        {1, 1, 0},
+        {0, 1, 0},
+        {0, 1, 1},
+    };
+    vector<vector<double> > y = vector<vector<double> >{
+        {0},
+        {1},
+        {0},
+        {0},
+        {1},
+        {0},
+        {1},
+        {1},
+        {1},
+    };
 
     MultilayerPerceptron mlp = MultilayerPerceptron(networkSpecs, initialBias, initialWeightValue, learningRate);
 
