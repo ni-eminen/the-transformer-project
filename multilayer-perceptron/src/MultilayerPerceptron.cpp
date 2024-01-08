@@ -3,6 +3,7 @@
 #include <vector>
 #include <cmath>
 #include <stdexcept>
+#include <stdlib.h>
 #include <time.h>
 #include <iostream>
 #include "LinearAlgebra.hpp"
@@ -110,7 +111,9 @@ void MultilayerPerceptron::train(vector<double> x, vector<double> y)
     double eTotalWrtPrediction = d_binary_cross_entropy(y, output);
     vector<vector<vector<double> > > eTotalWrtWeight(this->weights.size(), vector<vector<double> >(hiddenLayerDim, vector<double>()));
     vector<vector<double> > star = axbVector(this->totalLayerAmt, this->hiddenLayerDim);
+    vector<vector<double> > starBiases = axbVector(this->totalLayerAmt, this->hiddenLayerDim);
     vector<vector<double> > eTotalWrtBias(this->weights.size(), vector<double>());
+
     // Traverse the layers backwards starting from second to last layer
     for (int layer_i = this->weights.size() - 1; layer_i >= 0; layer_i--)
     {
@@ -130,9 +133,9 @@ void MultilayerPerceptron::train(vector<double> x, vector<double> y)
                 {
                     // o is used as iterator variable as it represenths the oth output neuron.
                     // o is commonly used to denote the output layer's neurons
-                    for (int o = 0; o < this->outputLayerDim; o++)
+                    for (int o = 0; o < this->weights[layer_i + 1].size(); o++)
                     {
-                        eTotalWrtOutput += star[layer_i + 1][o] * this->weights[this->totalLayerAmt - 1][weight_i][o];
+                        eTotalWrtOutput += star[layer_i + 1][o] * this->weights[layer_i + 1][weight_i][o];
                     }
                 }
 
@@ -149,13 +152,14 @@ void MultilayerPerceptron::train(vector<double> x, vector<double> y)
             }
             else
             {
-                for (int o = 0; o < this->outputLayerDim; o++)
+                for (int o = 0; o < this->weights[layer_i + 1].size(); o++)
                 {
-                    eTotalWrtOutput += d_binary_cross_entropy(y, vector<double>(1, this->forwardOuts[this->totalLayerAmt][o])) * dSigmoid(this->forwardIns[this->totalLayerAmt][o]) * this->weights[this->totalLayerAmt - 1][neuron_i][o];
+                    eTotalWrtOutput += starBiases[layer_i + 1][o] * this->weights[layer_i + 1][neuron_i][o];
                 }
             }
-            outputWrtWeightedSum = dSigmoid(this->forwardIns[layer_i][neuron_i]);
+            outputWrtWeightedSum = dSigmoid(this->forwardIns[layer_i + 1][neuron_i]);
             eTotalWrtBias[layer_i].push_back(eTotalWrtOutput * outputWrtWeightedSum);
+            starBiases[layer_i][neuron_i] = eTotalWrtOutput * outputWrtWeightedSum;
         }
     }
 

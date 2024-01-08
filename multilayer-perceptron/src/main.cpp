@@ -1,14 +1,12 @@
 
 #include <vector>
+#include <iomanip>
 #include "MultilayerPerceptron.hpp"
 #include "utils.hpp"
 #include "Types.hpp"
 
 int main(int argc, char *argv[])
 {
-    int hiddenLayerDim = 10;
-    int inputLayerDim = 2;
-    int outputLayerDim = 1;
     double initialBias = 1;
     double initialWeightValue = 1;
     double learningRate = .01;
@@ -20,9 +18,9 @@ int main(int argc, char *argv[])
     MultilayerPerceptron mlp = MultilayerPerceptron(networkSpecs, initialBias, initialWeightValue, learningRate);
 
     // Training
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 1000; i++)
     {
-        for (int i = 0; i < 10000; i++)
+        for (int i = 0; i < 100; i++)
         {
             for (int j = 0; j < X.size(); j++)
             {
@@ -32,11 +30,13 @@ int main(int argc, char *argv[])
         std::cout << "-----------" << std::endl;
         for (int i = 0; i < X.size(); i++)
         {
+            std::cout << std::fixed;
+            std::cout << std::setprecision(2);
             std::cout << mlp.forward(X[i])[0] << std::endl;
         }
     }
 
-    printMatrix(mlp.weights[1]);
+    printMatrix(mlp.biases);
     // printMatrix(mlp.weights[2]);
 
     return 0;
