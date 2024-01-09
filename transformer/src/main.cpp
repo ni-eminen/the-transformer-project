@@ -6,13 +6,16 @@
 
 int main(int argc, char *argv[])
 {
-    int encoderHeadsN = 3;
-    int decoderHeadsN = 3;
-    double learningRate = .01;
-    Transformer transformer = Transformer();
+    // int encoderAttnHeadsN = 8;
+    // int decoderAttnHeadsN = 8;
+    // int encoderStackN = 6;
+    // int decoderStackN = 6;
+    // double learningRate = .01;
+    // Transformer transformer = Transformer();
 
-    vector<std::string> vocab = vector<std::string>();
-    vector<int> input = vector<int>(1, 0);
+    // vector<std::string> vocab = vector<std::string>();
+    // vector<int> input = vector<int>(1, 0);
 
+    // branch: transformer
     return 0;
 }
