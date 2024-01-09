@@ -174,7 +174,6 @@ void MultilayerPerceptron::train(vector<double> x, vector<double> y)
             this->biases[layer_i][neuron_i] -= this->learningRate * eTotalWrtBias[layer_i][neuron_i];
         }
     }
-    // printMatrix(this->weights[0]);
 }
 
 double MultilayerPerceptron::lossFunction(vector<double> y, vector<double> yPred)

@@ -56,8 +56,5 @@ int main(int argc, char *argv[])
         }
     }
 
-    printMatrix(mlp.biases);
-    // printMatrix(mlp.weights[2]);
-
     return 0;
 }
