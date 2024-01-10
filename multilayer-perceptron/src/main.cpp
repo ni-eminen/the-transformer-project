@@ -49,9 +49,7 @@ int main(int argc, char *argv[])
         }
         std::cout << "-----------" << std::endl;
         printMatrix(mlp.weights[1], "first hidden layer: ");
-        printMatrix(mlp.weights[1], "");
-        printMatrix(mlp.weights[1], "second hidden layer: ");
-        printMatrix(mlp.weights[2], "");
+        printMatrix(mlp.weights[2], "second hidden layer: ");
         std::cout << std::endl;
         std::cout << "predictions: " << std::endl;
         for (int i = 0; i < X.size(); i++)
