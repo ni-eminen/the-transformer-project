@@ -24,5 +24,12 @@ mlp:
 	g++ -I ./utils -o ${MLP_X} -g main.o utils.o MultilayerPerceptron.o LinearAlgebra.o
 	${MLP_X}
 
+tutils:
+	g++ -I ./utils -g -c ${UTILS}/utils.cpp
+	g++ -I ./utils -g -c ${UTILS}/LinearAlgebra.cpp
+	g++ -I ./utils -g -c ${UTILS}/main.cpp
+	g++ -I ./utils -o ${UTILS}/main.out -g main.o utils.o MultilayerPerceptron.o LinearAlgebra.o
+	${UTILS}/main.out
+
 dmlp:
 	gdb ${MLP_X}
