@@ -64,11 +64,11 @@ MultilayerPerceptron::MultilayerPerceptron(vector<int> networkSpecs, double init
 
 double MultilayerPerceptron::activation(double x)
 {
-    return sigmoid(x);
+    return ReLU(x);
 }
 double MultilayerPerceptron::dActivation(double x)
 {
-    return dSigmoid(x);
+    return dReLU(x);
 }
 
 double MultilayerPerceptron::outputActivation(double x)

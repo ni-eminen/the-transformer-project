@@ -103,15 +103,23 @@ double dSigmoid(double x)
     return sigmoid(x) * (1 - sigmoid(x));
 }
 
+double RELU_CEILING = 2;
+
 double ReLU(double x)
 {
+    if (x >= RELU_CEILING)
+    {
+        return RELU_CEILING;
+    }
     return std::max(0.0, x);
 }
 
 int dReLU(double x)
 {
-    if (x > 0.0)
+    if (x > 0.0 && x <= RELU_CEILING)
         return 1;
+    if (x > RELU_CEILING)
+        return 0;
     return 0;
 }
 

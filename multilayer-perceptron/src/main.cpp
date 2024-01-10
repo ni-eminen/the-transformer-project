@@ -8,29 +8,19 @@ int main(int argc, char *argv[])
 {
     double initialBias = 1;
     double initialWeightValue = 1;
-    double learningRate = .001;
-    vector<int> networkSpecs = vector<int>{3, 4, 4, 1};
+    double learningRate = .0001;
+    vector<int> networkSpecs = vector<int>{2, 12, 1};
 
     vector<vector<double> > X = vector<vector<double> >{
-        {0, 0, 0},
-        {0, 1, 0},
-        {0, 0, 1},
-        {1, 0, 0},
-        {1, 1, 0},
-        {1, 0, 1},
-        {1, 1, 0},
-        {0, 1, 0},
-        {0, 1, 1},
+        {0, 0},
+        {0, 1},
+        {1, 0},
+        {1, 1},
     };
     vector<vector<double> > y = vector<vector<double> >{
         {0},
-        {1},
         {0},
         {0},
-        {1},
-        {0},
-        {1},
-        {1},
         {1},
     };
 
@@ -48,7 +38,6 @@ int main(int argc, char *argv[])
         }
         std::cout << "-----------" << std::endl;
         printMatrix(mlp.weights[1], "first hidden layer: ");
-        printMatrix(mlp.weights[2], "second hidden layer: ");
         std::cout << std::endl;
         std::cout << "predictions: " << std::endl;
         for (int i = 0; i < X.size(); i++)
