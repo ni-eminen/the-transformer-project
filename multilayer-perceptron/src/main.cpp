@@ -25,14 +25,14 @@ int main(int argc, char *argv[])
     };
     vector<vector<double> > y = vector<vector<double> >{
         {0},
-        {1},
+        {-1},
         {0},
         {0},
-        {1},
+        {-1},
         {0},
-        {1},
-        {1},
-        {1},
+        {-1},
+        {-1},
+        {-1},
     };
 
     MultilayerPerceptron mlp = MultilayerPerceptron(networkSpecs, initialBias, initialWeightValue, learningRate);
