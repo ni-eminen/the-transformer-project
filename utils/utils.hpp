@@ -21,6 +21,10 @@ double sigmoid(double x);
 
 double dSigmoid(double x);
 
+double ReLU(double x);
+
+int dReLU(double x);
+
 double weightedSum(const std::vector<double> &weights, const std::vector<double> &inputs);
 
 #endif // UTILS_TRANSFORMER

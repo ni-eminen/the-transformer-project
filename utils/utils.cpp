@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <cmath>
 #include <numeric>
+#include <algorithm>
 #include "utils.hpp"
 #include "Types.hpp"
 
@@ -100,6 +101,18 @@ double sigmoid(double x)
 double dSigmoid(double x)
 {
     return sigmoid(x) * (1 - sigmoid(x));
+}
+
+double ReLU(double x)
+{
+    return std::max(0.0, x);
+}
+
+int dReLU(double x)
+{
+    if (x > 0.0)
+        return 1;
+    return 0;
 }
 
 double weightedSum(const std::vector<double> &weights, const std::vector<double> &inputs)

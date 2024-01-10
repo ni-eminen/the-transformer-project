@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
 {
     double initialBias = 1;
     double initialWeightValue = 1;
-    double learningRate = .0001;
+    double learningRate = .0005;
     vector<int> networkSpecs = vector<int>{3, 3, 3, 1};
 
     vector<vector<double> > X = vector<vector<double> >{
