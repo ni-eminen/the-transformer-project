@@ -135,7 +135,6 @@ double weightedSum(const std::vector<double> &weights, const std::vector<double>
 
 void printMatrix(const std::vector<std::vector<double> > &A, const std::string &title)
 {
-    std::cout << "-------------------------------" << std::endl;
     std::cout << title << std::endl;
 
     if (A.empty())
