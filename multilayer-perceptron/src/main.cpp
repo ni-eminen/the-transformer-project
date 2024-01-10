@@ -1,5 +1,4 @@
 
-#include <vector>
 #include <iomanip>
 #include "MultilayerPerceptron.hpp"
 #include "utils.hpp"
@@ -9,7 +8,7 @@ int main(int argc, char *argv[])
 {
     double initialBias = 1;
     double initialWeightValue = 1;
-    double learningRate = .0001;
+    double learningRate = .001;
     vector<int> networkSpecs = vector<int>{3, 4, 4, 1};
 
     vector<vector<double> > X = vector<vector<double> >{
