@@ -26,13 +26,18 @@ vector<vector<double> > generateInitialLayerWeights(int layerDimension, int next
     return weightsInitial;
 }
 
-MultilayerPerceptron::MultilayerPerceptron(vector<int> networkSpecs, double initialBias, double initialWeightValue, double learningRate)
+MultilayerPerceptron::MultilayerPerceptron(vector<int> networkSpecs, double initialBias, double initialWeightValue, double learningRate, double (*activation)(double), double (*dActivation)(double))
 {
     this->learningRate = learningRate;
     this->inputLayerDim = networkSpecs[0];
     this->hiddenLayerDim = networkSpecs[1];
     this->outputLayerDim = networkSpecs[networkSpecs.size() - 1];
     this->hiddenLayerAmount = networkSpecs.size() - 2;
+
+    this->activation = activation;
+    this->dActivation = dActivation;
+    this->outputActivation = &sigmoid;
+    this->dOutputActivation = &dSigmoid;
 
     vector<vector<double> > hiddenBiases(hiddenLayerAmount, vector<double>(hiddenLayerDim, initialBias));
     vector<double> outputBiases(outputLayerDim, initialBias);
@@ -60,24 +65,6 @@ MultilayerPerceptron::MultilayerPerceptron(vector<int> networkSpecs, double init
     this->biases = biases;
 
     this->totalLayerAmt = this->weights.size();
-}
-
-double MultilayerPerceptron::activation(double x)
-{
-    return ReLU(x);
-}
-double MultilayerPerceptron::dActivation(double x)
-{
-    return dReLU(x);
-}
-
-double MultilayerPerceptron::outputActivation(double x)
-{
-    return sigmoid(x);
-}
-double MultilayerPerceptron::dOutputActivation(double x)
-{
-    return dSigmoid(x);
 }
 
 double MultilayerPerceptron::loss(std::vector<double> y, std::vector<double> y_pred)

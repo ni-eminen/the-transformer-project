@@ -31,16 +31,18 @@ public:
     MultilayerPerceptron(vector<int> networkSpecs,
                          double initialBias,
                          double initialWeightValue,
-                         double learningRate);
+                         double learningRate,
+                         double (*activation)(double),
+                         double (*dActivation)(double));
 
     void print(std::string x);
 
     double combinationFunction(vector<double> weights, vector<double> inputs);
 
-    double activation(double x);
-    double dActivation(double x);
-    double outputActivation(double x);
-    double dOutputActivation(double x);
+    double (*activation)(double);
+    double (*dActivation)(double);
+    double (*outputActivation)(double);
+    double (*dOutputActivation)(double);
     double loss(std::vector<double> y, std::vector<double> y_pred);
     double dLoss(std::vector<double> y, std::vector<double> y_pred);
 

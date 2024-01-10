@@ -8,8 +8,8 @@ int main(int argc, char *argv[])
 {
     double initialBias = 1;
     double initialWeightValue = 1;
-    double learningRate = .0001;
-    vector<int> networkSpecs = vector<int>{2, 12, 1};
+    double learningRate = 1.0E-2;
+    vector<int> networkSpecs = vector<int>{2, 6, 6, 1};
 
     vector<vector<double> > X = vector<vector<double> >{
         {0, 0},
@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
         {1},
     };
 
-    MultilayerPerceptron mlp = MultilayerPerceptron(networkSpecs, initialBias, initialWeightValue, learningRate);
+    MultilayerPerceptron mlp = MultilayerPerceptron(networkSpecs, initialBias, initialWeightValue, learningRate, &sigmoid, &dSigmoid);
 
     // Training
     for (int i = 0; i < 1000; i++)
@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
             {
                 correct = "Correct";
             }
-            std::cout << "input: [ " << (int)round(X[i][0]) << ", " << (int)round(X[i][1]) << ", " << (int)round(X[i][2]) << " ], y_pred: " << pred << " "
+            std::cout << "input: [ " << (int)round(X[i][0]) << ", " << (int)round(X[i][1]) << " ], y_pred: " << pred << " "
                       << "y: " << y[i][0] << ": " << correct << std::endl;
         }
     }
