@@ -62,9 +62,31 @@ MultilayerPerceptron::MultilayerPerceptron(vector<int> networkSpecs, double init
     this->totalLayerAmt = this->weights.size();
 }
 
-double MultilayerPerceptron::activationFunction(double x)
+double MultilayerPerceptron::activation(double x)
 {
     return sigmoid(x);
+}
+double MultilayerPerceptron::dActivation(double x)
+{
+    return dSigmoid(x);
+}
+
+double MultilayerPerceptron::outputActivation(double x)
+{
+    return sigmoid(x);
+}
+double MultilayerPerceptron::dOutputActivation(double x)
+{
+    return dSigmoid(x);
+}
+
+double MultilayerPerceptron::loss(std::vector<double> y, std::vector<double> y_pred)
+{
+    return binary_cross_entropy(y, y_pred);
+}
+double MultilayerPerceptron::dLoss(std::vector<double> y, std::vector<double> y_pred)
+{
+    return d_binary_cross_entropy(y, y_pred);
 }
 
 vector<double> MultilayerPerceptron::forward(vector<double> inputs)
@@ -94,7 +116,15 @@ vector<double> MultilayerPerceptron::forward(vector<double> inputs)
 
         for (int neuron_i = 0; neuron_i < weightedSums.size(); neuron_i++)
         {
-            outputs.push_back(this->activationFunction(weightedSumPlusBias[neuron_i]));
+            // output layer
+            if (layer_i == this->weights.size() - 1)
+            {
+                outputs.push_back(this->outputActivation(weightedSumPlusBias[neuron_i]));
+            }
+            else
+            {
+                outputs.push_back(this->activation(weightedSumPlusBias[neuron_i]));
+            }
         }
         // Saving these for backpropagation
         this->forwardIns.push_back(weightedSumPlusBias);
@@ -107,8 +137,8 @@ vector<double> MultilayerPerceptron::forward(vector<double> inputs)
 void MultilayerPerceptron::train(vector<double> x, vector<double> y)
 {
     vector<double> output = this->forward(x);
-    double eTotal = lossFunction(y, output);
-    double eTotalWrtPrediction = d_binary_cross_entropy(y, output);
+    double eTotal = this->loss(y, output);
+    double eTotalWrtPrediction = this->dLoss(y, output);
     vector<vector<vector<double> > > eTotalWrtWeight(this->weights.size(), vector<vector<double> >(hiddenLayerDim, vector<double>()));
     vector<vector<double> > star = axbVector(this->totalLayerAmt, this->hiddenLayerDim);
     vector<vector<double> > starBiases = axbVector(this->totalLayerAmt, this->hiddenLayerDim);
@@ -127,7 +157,7 @@ void MultilayerPerceptron::train(vector<double> x, vector<double> y)
             {
                 if (layer_i == weights.size() - 1)
                 {
-                    eTotalWrtOutput = d_binary_cross_entropy(y, this->forwardOuts[layer_i + 1]);
+                    eTotalWrtOutput = dLoss(y, this->forwardOuts[layer_i + 1]);
                 }
                 else
                 {
@@ -139,7 +169,7 @@ void MultilayerPerceptron::train(vector<double> x, vector<double> y)
                     }
                 }
 
-                outputWrtWeightedSum = dSigmoid(this->forwardIns[layer_i + 1][weight_i]);
+                outputWrtWeightedSum = this->dActivation(this->forwardIns[layer_i + 1][weight_i]);
                 double weightedSumWrtWeight = this->forwardOuts[layer_i][neuron_i];
 
                 eTotalWrtWeight[layer_i][neuron_i].push_back(eTotalWrtOutput * outputWrtWeightedSum * weightedSumWrtWeight);
@@ -148,7 +178,7 @@ void MultilayerPerceptron::train(vector<double> x, vector<double> y)
             // Bias
             if (layer_i == weights.size() - 1)
             {
-                eTotalWrtOutput = d_binary_cross_entropy(y, this->forwardOuts[layer_i + 1]);
+                eTotalWrtOutput = dLoss(y, this->forwardOuts[layer_i + 1]);
             }
             else
             {
@@ -157,7 +187,7 @@ void MultilayerPerceptron::train(vector<double> x, vector<double> y)
                     eTotalWrtOutput += starBiases[layer_i + 1][o] * this->weights[layer_i + 1][neuron_i][o];
                 }
             }
-            outputWrtWeightedSum = dSigmoid(this->forwardIns[layer_i + 1][neuron_i]);
+            outputWrtWeightedSum = dActivation(this->forwardIns[layer_i + 1][neuron_i]);
             eTotalWrtBias[layer_i].push_back(eTotalWrtOutput * outputWrtWeightedSum);
             starBiases[layer_i][neuron_i] = eTotalWrtOutput * outputWrtWeightedSum;
         }
@@ -174,9 +204,4 @@ void MultilayerPerceptron::train(vector<double> x, vector<double> y)
             this->biases[layer_i][neuron_i] -= this->learningRate * eTotalWrtBias[layer_i][neuron_i];
         }
     }
-}
-
-double MultilayerPerceptron::lossFunction(vector<double> y, vector<double> yPred)
-{
-    return binary_cross_entropy(y, yPred);
 }

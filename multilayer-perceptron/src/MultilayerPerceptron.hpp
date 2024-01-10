@@ -37,7 +37,12 @@ public:
 
     double combinationFunction(vector<double> weights, vector<double> inputs);
 
-    double activationFunction(double x);
+    double activation(double x);
+    double dActivation(double x);
+    double outputActivation(double x);
+    double dOutputActivation(double x);
+    double loss(std::vector<double> y, std::vector<double> y_pred);
+    double dLoss(std::vector<double> y, std::vector<double> y_pred);
 
     vector<double> forward(vector<double> inputs);
 
