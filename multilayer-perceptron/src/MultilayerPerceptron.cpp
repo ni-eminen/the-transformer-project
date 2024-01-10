@@ -126,7 +126,11 @@ void MultilayerPerceptron::train(vector<double> x, vector<double> y)
     vector<double> output = this->forward(x);
     double eTotal = this->loss(y, output);
     double eTotalWrtPrediction = this->dLoss(y, output);
-    vector<vector<vector<double> > > eTotalWrtWeight(this->weights.size(), vector<vector<double> >(hiddenLayerDim, vector<double>()));
+    vector<vector<vector<double> > > eTotalWrtWeight;
+    for (int i = 0; i < this->networkSpecs.size(); i++)
+    {
+        eTotalWrtWeight.push_back(vector<vector<double> >(this->networkSpecs[i], vector<double>()));
+    }
     vector<vector<double> > star = axbVector(this->totalLayerAmt, this->hiddenLayerDim);
     vector<vector<double> > starBiases = axbVector(this->totalLayerAmt, this->hiddenLayerDim);
     vector<vector<double> > eTotalWrtBias(this->weights.size(), vector<double>());
