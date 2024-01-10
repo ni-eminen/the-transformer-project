@@ -20,6 +20,7 @@ vector<vector<double> > generateInitialLayerWeights(int layerDimension, int next
         for (int i = 0; i < nextLayerDimension; i++)
         {
             double r = ((double)rand() / (RAND_MAX));
+            r = (r + .25) / 1.6666; // Interpolation to .25 - .75
             weightsInitial[j].push_back(r);
         }
     }
@@ -28,6 +29,7 @@ vector<vector<double> > generateInitialLayerWeights(int layerDimension, int next
 
 MultilayerPerceptron::MultilayerPerceptron(vector<int> networkSpecs, double initialBias, double initialWeightValue, double learningRate, double (*activation)(double), double (*dActivation)(double))
 {
+    this->networkSpecs = networkSpecs;
     this->learningRate = learningRate;
     this->inputLayerDim = networkSpecs[0];
     this->hiddenLayerDim = networkSpecs[1];
@@ -91,7 +93,6 @@ vector<double> MultilayerPerceptron::forward(vector<double> inputs)
     this->forwardIns.push_back(inputs);
     this->forwardOuts.push_back(inputs);
 
-    // vector<double> outputs = inputs;
     vector<double> outputs;
     std::copy(inputs.begin(), inputs.end(), std::back_inserter(outputs));
     double weightedSumsPlusBias;
@@ -117,7 +118,6 @@ vector<double> MultilayerPerceptron::forward(vector<double> inputs)
         this->forwardIns.push_back(weightedSumPlusBias);
         this->forwardOuts.push_back(outputs);
     }
-
     return outputs;
 }
 
@@ -135,16 +135,17 @@ void MultilayerPerceptron::train(vector<double> x, vector<double> y)
     for (int layer_i = this->weights.size() - 1; layer_i >= 0; layer_i--)
     {
         // Traverse the neurons on layer_i
-        for (int neuron_i = 0; neuron_i < weights[layer_i].size(); neuron_i++)
+        for (int neuron_i = 0; neuron_i < this->networkSpecs[layer_i]; neuron_i++)
         {
             // Traverse the weights of neuron_i
             double eTotalWrtOutput;
             double outputWrtWeightedSum;
-            for (int weight_i = 0; weight_i < this->forwardOuts[layer_i + 1].size(); weight_i++)
+            for (int weight_i = 0; weight_i < this->networkSpecs[layer_i + 1]; weight_i++)
             {
                 if (layer_i == weights.size() - 1)
                 {
-                    eTotalWrtOutput = dLoss(y, this->forwardOuts[layer_i + 1]);
+                    eTotalWrtOutput = this->dLoss(y, this->forwardOuts[layer_i + 1]);
+                    outputWrtWeightedSum = this->dOutputActivation(this->forwardIns[layer_i + 1][weight_i]);
                 }
                 else
                 {
@@ -154,27 +155,34 @@ void MultilayerPerceptron::train(vector<double> x, vector<double> y)
                     {
                         eTotalWrtOutput += star[layer_i + 1][o] * this->weights[layer_i + 1][weight_i][o];
                     }
+                    outputWrtWeightedSum = this->dActivation(this->forwardIns[layer_i + 1][weight_i]);
                 }
 
-                outputWrtWeightedSum = this->dActivation(this->forwardIns[layer_i + 1][weight_i]);
                 double weightedSumWrtWeight = this->forwardOuts[layer_i][neuron_i];
 
                 eTotalWrtWeight[layer_i][neuron_i].push_back(eTotalWrtOutput * outputWrtWeightedSum * weightedSumWrtWeight);
                 star[layer_i][neuron_i] += eTotalWrtOutput * outputWrtWeightedSum;
             }
-            // Bias
+        }
+
+        // Bias
+        for (int neuron_i = 0; neuron_i < this->networkSpecs[layer_i + 1]; neuron_i++)
+        {
+            double eTotalWrtOutput;
+            double outputWrtWeightedSum;
             if (layer_i == weights.size() - 1)
             {
-                eTotalWrtOutput = dLoss(y, this->forwardOuts[layer_i + 1]);
+                eTotalWrtOutput = this->dLoss(y, this->forwardOuts[layer_i + 1]);
+                outputWrtWeightedSum = this->dOutputActivation(this->forwardIns[layer_i + 1][neuron_i]);
             }
             else
             {
-                for (int o = 0; o < this->weights[layer_i + 1].size(); o++)
+                for (int o = 0; o < this->networkSpecs[layer_i + 1]; o++)
                 {
-                    eTotalWrtOutput += starBiases[layer_i + 1][o] * this->weights[layer_i + 1][neuron_i][o];
+                    eTotalWrtOutput += starBiases[layer_i + 1][neuron_i] * this->weights[layer_i + 1][neuron_i][o];
                 }
+                double outputWrtWeightedSum = this->dActivation(this->forwardIns[layer_i + 1][neuron_i]);
             }
-            outputWrtWeightedSum = dActivation(this->forwardIns[layer_i + 1][neuron_i]);
             eTotalWrtBias[layer_i].push_back(eTotalWrtOutput * outputWrtWeightedSum);
             starBiases[layer_i][neuron_i] = eTotalWrtOutput * outputWrtWeightedSum;
         }

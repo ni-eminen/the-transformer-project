@@ -114,7 +114,7 @@ double ReLU(double x)
     return std::max(0.0, x);
 }
 
-int dReLU(double x)
+double dReLU(double x)
 {
     if (x > 0.0 && x <= RELU_CEILING)
         return 1;

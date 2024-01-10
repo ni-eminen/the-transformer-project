@@ -17,7 +17,7 @@ public:
     vector<vector<double> > outputWeights;
     vector<vector<double> > forwardOuts;
     vector<vector<double> > forwardIns;
-
+    vector<int> networkSpecs;
     vector<vector<double> > hiddenBiases;
     vector<double> outputBiases;
     int hiddenLayerDim;

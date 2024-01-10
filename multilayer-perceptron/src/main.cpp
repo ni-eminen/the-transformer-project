@@ -8,8 +8,8 @@ int main(int argc, char *argv[])
 {
     double initialBias = 1;
     double initialWeightValue = 1;
-    double learningRate = 1.0E-2;
-    vector<int> networkSpecs = vector<int>{2, 6, 6, 1};
+    double learningRate = 1.5E-2;
+    vector<int> networkSpecs = vector<int>{2, 10, 8, 1};
 
     vector<vector<double> > X = vector<vector<double> >{
         {0, 0},
@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
     vector<vector<double> > y = vector<vector<double> >{
         {0},
         {0},
-        {0},
+        {1},
         {1},
     };
 
@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
     // Training
     for (int i = 0; i < 1000; i++)
     {
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 500; i++)
         {
             for (int j = 0; j < X.size(); j++)
             {
@@ -39,19 +39,20 @@ int main(int argc, char *argv[])
         std::cout << "-----------" << std::endl;
         printMatrix(mlp.weights[1], "first hidden layer: ");
         std::cout << std::endl;
+        std::cout << "Epoch: " << i << std::endl;
         std::cout << "predictions: " << std::endl;
-        for (int i = 0; i < X.size(); i++)
+        for (int z = 0; z < X.size(); z++)
         {
             std::cout << std::fixed;
             std::cout << std::setprecision(2);
-            double pred = mlp.forward(X[i])[0];
+            double pred = mlp.forward(X[z])[0];
             std::string correct = "incorrect";
-            if (round(pred) == y[i][0])
+            if (round(pred) == y[z][0])
             {
                 correct = "Correct";
             }
-            std::cout << "input: [ " << (int)round(X[i][0]) << ", " << (int)round(X[i][1]) << " ], y_pred: " << pred << " "
-                      << "y: " << y[i][0] << ": " << correct << std::endl;
+            std::cout << "input: [ " << (int)round(X[z][0]) << ", " << (int)round(X[z][1]) << " ], y_pred: " << pred << " "
+                      << "y: " << y[z][0] << ": " << correct << std::endl;
         }
     }
 
