@@ -32,27 +32,27 @@ vector<double> replaceZeros(vector<double> vec, double replacement)
     return vec;
 }
 
-double binary_cross_entropy(vector<double> y, vector<double> y_pred)
-{
-    y = replaceZeros(y, DBL_MIN);
-    y_pred = replaceZeros(y_pred, DBL_MIN);
+// double binary_cross_entropy(vector<double> y, vector<double> y_pred)
+// {
+//     y = replaceZeros(y, DBL_MIN);
+//     y_pred = replaceZeros(y_pred, DBL_MIN);
 
-    double result = 0;
-    for (int i = 0; i < y.size(); i++)
-    {
-        if (y_pred[i] == 1)
-        {
-            y_pred[i] = 1.0 - 1.0 / pow(10, 10);
-        }
+//     double result = 0;
+//     for (int i = 0; i < y.size(); i++)
+//     {
+//         if (y_pred[i] == 1)
+//         {
+//             y_pred[i] = 1.0 - 1.0 / pow(10, 10);
+//         }
 
-        double temp = y[i] * log(y_pred[i]) + (1.0 - y[i]) * (log(1.0 - y_pred[i]));
-        result = result + temp;
-    }
+//         double temp = y[i] * log(y_pred[i]) + (1.0 - y[i]) * (log(1.0 - y_pred[i]));
+//         result = result + temp;
+//     }
 
-    return -(1.0 / y.size()) * result;
-}
+//     return -(1.0 / y.size()) * result;
+// }
 
-double binary_cross_entropy(const std::vector<double> &y, const std::vector<double> &y_pred)
+double binary_cross_entropy(std::vector<double> y, std::vector<double> y_pred)
 {
     if (y.size() != y_pred.size())
     {

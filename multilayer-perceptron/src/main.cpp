@@ -9,8 +9,8 @@ int main(int argc, char *argv[])
 {
     double initialBias = 1;
     double initialWeightValue = 1;
-    double learningRate = .01;
-    vector<int> networkSpecs = vector<int>{3, 4, 4, 4, 1};
+    double learningRate = .0001;
+    vector<int> networkSpecs = vector<int>{3, 3, 3, 1};
 
     vector<vector<double> > X = vector<vector<double> >{
         {0, 0, 0},
@@ -48,11 +48,24 @@ int main(int argc, char *argv[])
             }
         }
         std::cout << "-----------" << std::endl;
+        printMatrix(mlp.weights[1], "first hidden layer: ");
+        printMatrix(mlp.weights[1], "");
+        printMatrix(mlp.weights[1], "second hidden layer: ");
+        printMatrix(mlp.weights[2], "");
+        std::cout << std::endl;
+        std::cout << "predictions: " << std::endl;
         for (int i = 0; i < X.size(); i++)
         {
             std::cout << std::fixed;
             std::cout << std::setprecision(2);
-            std::cout << mlp.forward(X[i])[0] << std::endl;
+            double pred = mlp.forward(X[i])[0];
+            std::string correct = "incorrect";
+            if (round(pred) == y[i][0])
+            {
+                correct = "Correct";
+            }
+            std::cout << "input: [ " << (int)round(X[i][0]) << ", " << (int)round(X[i][1]) << ", " << (int)round(X[i][2]) << " ], y_pred: " << pred << " "
+                      << "y: " << y[i][0] << ": " << correct << std::endl;
         }
     }
 
