@@ -12,32 +12,25 @@ class Transformer
 {
 public:
     double learningRate;
-    vector<vector<double> > inputWeights;
-    vector<vector<vector<double> > > hiddenWeights;
-    vector<vector<double> > outputWeights;
-    vector<vector<double> > forwardOuts;
-    vector<vector<double> > forwardIns;
-
-    vector<vector<double> > hiddenBiases;
-    vector<double> outputBiases;
-    int hiddenLayerDim;
-    int inputLayerDim;
-    int outputLayerDim;
-    int totalLayerAmt;
-    int hiddenLayerAmount;
-    vector<vector<vector<double> > > weights;
-    vector<vector<double> > biases;
 
     Transformer(vector<int> networkSpecs,
                 double initialBias,
                 double initialWeightValue,
                 double learningRate);
 
+    double scaledDotProductAttention(vector<double> K, vector<double> Q, vector<double> V);
+
+    double multiHeadAttention(vector<double> K, vector<double> Q, vector<double> V);
+
+    double maskedMultiHeadAttention(vector<double> K, vector<double> Q, vector<double> V);
+
+    vector<double> addAndNorm(vector<vector<double> > V);
+
+    vector<double> softmax(vector<double> v);
+
+    vector<double> positionEncoding(vector<double> v);
+
     void print(std::string x);
-
-    double combinationFunction(vector<double> weights, vector<double> inputs);
-
-    double activationFunction(double x);
 
     vector<double> forward(vector<double> inputs);
 
