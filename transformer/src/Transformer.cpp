@@ -12,9 +12,7 @@ vector<double> addAndNorm(vector<vector<double> > V);
 
 vector<double> softmax(vector<double> v);
 
-vector<double> positionEncoding(vector<double> v);
-
-void print(std::string x);
+vector<double> positionalEncoding(vector<double> v);
 
 vector<double> forward(vector<double> inputs);
 
