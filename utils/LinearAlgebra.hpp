@@ -14,3 +14,5 @@ vector<double> elementWiseSum(vector<double> a, vector<double> b);
 void printVector(vector<vector<double> > m, std::string label);
 
 vector<vector<double> > axbVector(int a, int b);
+
+vector<vector<double>> scalarMultiplyMatrix(double scalar, vector<vector<double>> A);

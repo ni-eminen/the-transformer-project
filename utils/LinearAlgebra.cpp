@@ -108,3 +108,17 @@ vector<double> elementWiseSum(vector<double> a, vector<double> b)
 
     return result;
 }
+
+vector<vector<double>> scalarMultiplyMatrix(double scalar, vector<vector<double>> A) {
+    int rows = A.size();
+    int cols = A[0].size();
+    vector<vector<double>> result = vector<vector<double>>(rows, vector<double>(cols, 0));
+
+    for (int row = 0; row<rows; row++) {
+        for (int col = 0; col<cols; col++) {
+            result[row][col] = scalar * A[row][col];
+        }
+    }
+
+    return result;
+}

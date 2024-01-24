@@ -1,9 +1,13 @@
 using namespace std;
 #include <string>
 #include "Types.hpp"
+#include "utils.hpp"
+#include "LinearAlgebra.hpp"
 
-double scaledDotProductAttention(vector<double> K, vector<double> Q, vector<double> V) {
-  return 0.0;
+
+vector<double> scaledDotProductAttention(vector<double> K, vector<double> Q, vector<double> V) {
+  vector<vector<double>> QK = matmul
+  return softmax();
 }
 
 double multiHeadAttention(vector<double> K, vector<double> Q, vector<double> V) {
