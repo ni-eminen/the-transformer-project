@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 #include <bits/stdc++.h>
-#include<cmath>
+#include <cmath>
 #include "LinearAlgebra.hpp"
 #include "utils.hpp"
 #include "Types.hpp"
@@ -41,18 +41,22 @@ vector<vector<double> > matMul(vector<vector<double> > A, vector<vector<double> 
     return result;
 }
 
-double sumVector(vector<double> v) {
+double sumVector(vector<double> v)
+{
     double result = 0;
-    for (double x : v) {
+    for (double x : v)
+    {
         result += x;
     }
 
     return result;
 }
 
-double expSumVector(vector<double> v) {
+double expSumVector(vector<double> v)
+{
     double result = 0;
-    for (double x : v) {
+    for (double x : v)
+    {
         result += std::exp(x);
     }
 
@@ -129,13 +133,16 @@ vector<double> elementWiseSum(vector<double> a, vector<double> b)
     return result;
 }
 
-vector<vector<double>> scalarMultiplyMatrix(double scalar, vector<vector<double>> A) {
+vector<vector<double> > scalarMultiplyMatrix(double scalar, vector<vector<double> > A)
+{
     int rows = A.size();
     int cols = A[0].size();
-    vector<vector<double>> result = vector<vector<double>>(rows, vector<double>(cols, 0));
+    vector<vector<double> > result = vector<vector<double> >(rows, vector<double>(cols, 0));
 
-    for (int row = 0; row<rows; row++) {
-        for (int col = 0; col<cols; col++) {
+    for (int row = 0; row < rows; row++)
+    {
+        for (int col = 0; col < cols; col++)
+        {
             result[row][col] = scalar * A[row][col];
         }
     }
@@ -143,35 +150,41 @@ vector<vector<double>> scalarMultiplyMatrix(double scalar, vector<vector<double>
     return result;
 }
 
-vector<double> vectorAddition(vector<double> v1, vector<double> v2) {
-    if (v1.size() != v2.size()) {
+vector<double> vectorAddition(vector<double> v1, vector<double> v2)
+{
+    if (v1.size() != v2.size())
+    {
         throw std::invalid_argument("Vectors must be equal size.");
     }
 
     vector<double> result;
 
-    for (int i = 0; i<v1.size(); i++) {
+    for (int i = 0; i < v1.size(); i++)
+    {
         result.push_back(v1[i] + v2[i]);
-    }
-
-    return result;    
-}
-
-double vectorLength(vector<double> v) {
-    double result = 0;
-    for (int i = 0; i<v.size(); i++) {
-        result += pow(v[i], 2);
-    }
-    return sqrt(result);
-}
-
-vector<double> vectorNormalization(vector<double> v) {
-    vector<double> result;
-    double length = vectorLength(v);
-    for (int i = 0; i<v.size(); i++) {
-        result.push_back(v[i] / length);
     }
 
     return result;
 }
 
+double vectorLength(vector<double> v)
+{
+    double result = 0;
+    for (int i = 0; i < v.size(); i++)
+    {
+        result += pow(v[i], 2);
+    }
+    return sqrt(result);
+}
+
+vector<double> vectorNormalization(vector<double> v)
+{
+    vector<double> result;
+    double length = vectorLength(v);
+    for (int i = 0; i < v.size(); i++)
+    {
+        result.push_back(v[i] / length);
+    }
+
+    return result;
+}
