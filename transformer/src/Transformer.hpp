@@ -6,7 +6,7 @@
 #include <cmath>
 #include "Types.hpp"
 
-vector<vector<double> > generateInitialLayerWeights(int layerDimension, int nextLayerDimension, double defaultValue);
+vector<vector<double>> generateInitialLayerWeights(int layerDimension, int nextLayerDimension, double defaultValue);
 
 class Transformer
 {
@@ -24,9 +24,7 @@ public:
 
     double maskedMultiHeadAttention(vector<double> K, vector<double> Q, vector<double> V);
 
-    vector<double> addAndNorm(vector<vector<double> > V);
-
-    vector<double> softmax(vector<double> v);
+    vector<double> addAndNorm(vector<vector<double>> V);
 
     vector<double> positionalEncoding(vector<double> v);
 

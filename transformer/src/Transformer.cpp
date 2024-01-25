@@ -40,6 +40,12 @@ vector<vector<double>> scaledDotProductAttention(vector<vector<double>> K, vecto
 
 double multiHeadAttention(vector<double> K, vector<double> Q, vector<double> V)
 {
+  // Project through linear
+
+    // Give projections to sdpa
+  // concatenate
+  // return Projection of concatenation through linear layer
+
   return 0.0;
 }
 
@@ -51,11 +57,6 @@ double maskedMultiHeadAttention(vector<double> K, vector<double> Q, vector<doubl
 vector<double> addAndNorm(vector<double> v1, vector<double> v2)
 {
   return vectorNormalization(vectorAddition(v1, v2));
-}
-
-vector<double> softmax(vector<double> v)
-{
-  return vector<double>();
 }
 
 vector<double> positionalEncoding(vector<double> v, int position, int d_model)
