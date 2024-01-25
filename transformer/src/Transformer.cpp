@@ -27,7 +27,7 @@ vector<vector<double>> softmax(vector<vector<double>> input) {
 }
 
 
-vector<double> scaledDotProductAttention(vector<double> K, vector<double> Q, vector<double> V, double dim) {
+vector<vector<double>> scaledDotProductAttention(vector<vector<double>> K, vector<vector<double>> Q, vector<vector<double>> V, int dim) {
   vector<vector<double>> QK = matMul(Q, K);
   vector<vector<double>> QK_t = transpose(QK);
   vector<vector<double>> scaled_QK_t = scalarMultiplyMatrix((1/dim), QK_t);
