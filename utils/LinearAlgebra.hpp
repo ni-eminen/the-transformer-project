@@ -7,7 +7,8 @@ vector<vector<double> > matMul(vector<vector<double> > A, vector<vector<double> 
 vector<vector<double> > matMul(std::vector<double> A, vector<vector<double> > B);
 vector<vector<double> > matMul(vector<vector<double> > A, std::vector<double> B);
 double matMul(std::vector<double> A, std::vector<double> B);
-
+double sumVector(vector<double> v);
+double expSumVector(vector<double> v);
 vector<vector<double> > transpose(vector<vector<double> > A);
 vector<double> elementWiseSum(vector<double> a, vector<double> b);
 

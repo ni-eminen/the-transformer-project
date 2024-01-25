@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <bits/stdc++.h>
 #include "LinearAlgebra.hpp"
 #include "utils.hpp"
 #include "Types.hpp"
@@ -34,6 +35,24 @@ vector<vector<double> > matMul(vector<vector<double> > A, vector<vector<double> 
             resultPerRow.push_back(weightedSum);
         }
         result.push_back(resultPerRow);
+    }
+
+    return result;
+}
+
+double sumVector(vector<double> v) {
+    double result = 0;
+    for (double x : v) {
+        result += x;
+    }
+
+    return result;
+}
+
+double expSumVector(vector<double> v) {
+    double result = 0;
+    for (double x : v) {
+        result += std::exp(x);
     }
 
     return result;

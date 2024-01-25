@@ -1,8 +1,20 @@
 using namespace std;
 #include <string>
+#include <bits/stdc++.h>
 #include "Types.hpp"
 #include "utils.hpp"
 #include "LinearAlgebra.hpp"
+
+vector<double> softmax(vector<double> input) {
+  vector<double> result(input.size(), 0);
+
+  double expSum = expSumVector(input);
+  for (int i; i<input.size(); i++) {
+    std::exp(input[i]) / expSum;
+  }
+
+  return result;
+}
 
 
 vector<double> scaledDotProductAttention(vector<double> K, vector<double> Q, vector<double> V, double dim) {

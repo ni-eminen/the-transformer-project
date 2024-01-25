@@ -35,6 +35,10 @@ public:
     void train(vector<double> x, vector<double> y);
 
     double lossFunction(vector<double> y, vector<double> y_pred);
+
+    vector<double> softmax(vector<double> input);
+
+    vector<vector<double>> softmax(vector<vector<double>> input);
 };
 
 #endif // PERCEPTRON_H
