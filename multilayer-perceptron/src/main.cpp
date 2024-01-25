@@ -11,13 +11,13 @@ int main(int argc, char *argv[])
     double learningRate = 1.5E-4;
     vector<int> networkSpecs = vector<int>{2, 10, 8, 1};
 
-    vector<vector<double> > X = vector<vector<double> >{
+    vector<vector<double>> X = vector<vector<double>>{
         {0, 0},
         {0, 1},
         {1, 0},
         {1, 1},
     };
-    vector<vector<double> > y = vector<vector<double> >{
+    vector<vector<double>> y = vector<vector<double>>{
         {0},
         {0},
         {0},

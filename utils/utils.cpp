@@ -139,3 +139,24 @@ void printMatrix(const std::vector<std::vector<double> > &A, const std::string &
 
     std::cout << "-------------------------------" << std::endl;
 }
+
+vector<double> positionalEncoding(vector<double> v, int position, int d_model)
+{
+    vector<double> result;
+
+    for (int i = 0; i < v.size(); i++)
+    {
+        bool even = i % 2 == 0;
+
+        if (even)
+        {
+            result.push_back(std::sin(position / std::pow(10000, (2 * i) / d_model)));
+        }
+        else
+        {
+            result.push_back(std::cos(position / std::pow(10000, (2 * i) / d_model)));
+        }
+    }
+
+    return result;
+}

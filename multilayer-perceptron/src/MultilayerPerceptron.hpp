@@ -1,32 +1,31 @@
-#ifndef PERCEPTRON_H
-#define PERCEPTRON_H
+#pragma once
 
 #include <iostream>
 #include <vector>
 #include <cmath>
 #include "Types.hpp"
 
-vector<vector<double> > generateInitialLayerWeights(int layerDimension, int nextLayerDimension, double defaultValue);
+vector<vector<double>> generateInitialLayerWeights(int layerDimension, int nextLayerDimension, double defaultValue);
 
 class MultilayerPerceptron
 {
 public:
     double learningRate;
-    vector<vector<double> > inputWeights;
-    vector<vector<vector<double> > > hiddenWeights;
-    vector<vector<double> > outputWeights;
-    vector<vector<double> > forwardOuts;
-    vector<vector<double> > forwardIns;
+    vector<vector<double>> inputWeights;
+    vector<vector<vector<double>>> hiddenWeights;
+    vector<vector<double>> outputWeights;
+    vector<vector<double>> forwardOuts;
+    vector<vector<double>> forwardIns;
     vector<int> networkSpecs;
-    vector<vector<double> > hiddenBiases;
+    vector<vector<double>> hiddenBiases;
     vector<double> outputBiases;
     int hiddenLayerDim;
     int inputLayerDim;
     int outputLayerDim;
     int totalLayerAmt;
     int hiddenLayerAmount;
-    vector<vector<vector<double> > > weights;
-    vector<vector<double> > biases;
+    vector<vector<vector<double>>> weights;
+    vector<vector<double>> biases;
 
     MultilayerPerceptron(vector<int> networkSpecs,
                          double initialBias,
@@ -52,5 +51,3 @@ public:
 
     double lossFunction(vector<double> y, vector<double> y_pred);
 };
-
-#endif // PERCEPTRON_H

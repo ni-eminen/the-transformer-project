@@ -1,5 +1,4 @@
-#ifndef UTILS_TRANSFORMER
-#define UTILS_TRANSFORMER
+#pragma once
 
 #include <iostream>
 #include <vector>
@@ -9,7 +8,7 @@
 
 void printVector(vector<double> v, std::string title);
 
-void printMatrix(const std::vector<std::vector<double> > &A, const std::string &title = "matrix");
+void printMatrix(const std::vector<std::vector<double>> &A, const std::string &title = "matrix");
 
 std::vector<double> replaceZeros(std::vector<double> vec, double replacement);
 
@@ -27,4 +26,4 @@ double dReLU(double x);
 
 double weightedSum(const std::vector<double> &weights, const std::vector<double> &inputs);
 
-#endif // UTILS_TRANSFORMER
+vector<double> positionalEncoding(vector<double> v);
