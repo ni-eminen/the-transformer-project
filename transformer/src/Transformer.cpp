@@ -16,6 +16,16 @@ vector<double> softmax(vector<double> input) {
   return result;
 }
 
+vector<vector<double>> softmax(vector<vector<double>> input) {
+  vector<vector<double>> result;
+
+  for (int i; i<input.size(); i++) {
+    result.push_back(softmax(input[i]));
+  }
+
+  return result;
+}
+
 
 vector<double> scaledDotProductAttention(vector<double> K, vector<double> Q, vector<double> V, double dim) {
   vector<vector<double>> QK = matMul(Q, K);
