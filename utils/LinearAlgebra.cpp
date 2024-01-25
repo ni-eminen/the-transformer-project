@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <bits/stdc++.h>
+#include<cmath>
 #include "LinearAlgebra.hpp"
 #include "utils.hpp"
 #include "Types.hpp"
@@ -140,4 +141,36 @@ vector<vector<double>> scalarMultiplyMatrix(double scalar, vector<vector<double>
     }
 
     return result;
+}
+
+vector<double> vectorAddition(vector<double> v1, vector<double> v2) {
+    if (v1.size() != v2.size()) {
+        throw std::invalid_argument("Vectors must be equal size.");
+    }
+
+    vector<double> result;
+
+    for (int i = 0; i<v1.size(); i++) {
+        result.push_back(v1[i] + v2[i]);
+    }
+
+    return result;    
+}
+
+vector<double> vectorNormalization(vector<double> v) {
+    vector<double> result;
+    double length = vectorLength(v);
+    for (int i = 0; i<v.size(); i++) {
+        result.push_back(v[i] / length);
+    }
+
+    return result;
+}
+
+double vectorLength(vector<double> v) {
+    double result = 0;
+    for (int i = 0; i<v.size(); i++) {
+        result += pow(v[i], 2);
+    }
+    return sqrt(result);
 }

@@ -42,8 +42,8 @@ double maskedMultiHeadAttention(vector<double> K, vector<double> Q, vector<doubl
   return 0.0;
 }
 
-vector<double> addAndNorm(vector<vector<double> > V) {
-  return vector<double>();
+vector<double> addAndNorm(vector<double > v1, vector<double> v2) {
+  return vectorNormalization(vectorAddition(v1, v2));
 }
 
 vector<double> softmax(vector<double> v) {
