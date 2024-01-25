@@ -157,6 +157,14 @@ vector<double> vectorAddition(vector<double> v1, vector<double> v2) {
     return result;    
 }
 
+double vectorLength(vector<double> v) {
+    double result = 0;
+    for (int i = 0; i<v.size(); i++) {
+        result += pow(v[i], 2);
+    }
+    return sqrt(result);
+}
+
 vector<double> vectorNormalization(vector<double> v) {
     vector<double> result;
     double length = vectorLength(v);
@@ -167,10 +175,3 @@ vector<double> vectorNormalization(vector<double> v) {
     return result;
 }
 
-double vectorLength(vector<double> v) {
-    double result = 0;
-    for (int i = 0; i<v.size(); i++) {
-        result += pow(v[i], 2);
-    }
-    return sqrt(result);
-}
