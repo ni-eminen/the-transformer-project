@@ -18,7 +18,7 @@ public:
                 double initialWeightValue,
                 double learningRate);
 
-    vector<double> scaledDotProductAttention(vector<vector<double>> K, vector<vector<double>> Q, vector<vector<double>> V, int dim) {
+    vector<double> scaledDotProductAttention(vector<vector<double>> K, vector<vector<double>> Q, vector<vector<double>> V, int dim);
 
     double multiHeadAttention(vector<double> K, vector<double> Q, vector<double> V);
 
