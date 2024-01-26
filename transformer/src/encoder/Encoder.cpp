@@ -74,8 +74,15 @@ vector<vector<double>> scaledDotProductAttention(vector<vector<double>> K, vecto
 
 double multiHeadAttention(vector<double> K, vector<double> Q, vector<double> V)
 {
+  vector<vector<double>> heads_;
   // Project through linear
-
+  for (int h = 0; h < this->heads; h++)
+  {
+    vector<vector<double>> QW = this->qkvLinears[h][0].forward(Q);
+    vector<vector<double>> KW = this->qkvLinears[h][1].forward(K);
+    vector<vector<double>> VW = this->qkvLinears[h][2].forward(V);
+    heads_.push_back(scaledDotProductAttention(K, Q, V));
+  }
   // Give projections to sdpa
   // concatenate
   // return Projection of concatenation through linear layer
