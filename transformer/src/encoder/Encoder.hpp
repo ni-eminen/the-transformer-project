@@ -3,21 +3,27 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <string>
+#include <bits/stdc++.h>
+#include "Encoder.hpp"
 #include "Types.hpp"
+#include "MultilayerPerceptron.hpp"
 
-vector<vector<double>> generateInitialLayerWeights(int layerDimension, int nextLayerDimension, double defaultValue);
+vector<vector<double>> generateInitialLayerWeights(int layerDimension, int nextLayerDimension, double defaultValue, vector<int> ffnNetworkSpecs);
 
 class Encoder
 {
 public:
     double learningRate;
+    int heads;
+    int d_model;
+    vector<vector<MultilayerPerceptron>> qkvLinears;
+    vector<int> ffnNetworkSpecs;
 
-    Encoder(vector<int> networkSpecs,
-            double initialBias,
-            double initialWeightValue,
-            double learningRate,
-            int heads,
-            int d_model);
+    Encoder(
+        double learningRate,
+        int heads,
+        int d_model);
 
     vector<double> scaledDotProductAttention(vector<vector<double>> K, vector<vector<double>> Q, vector<vector<double>> V, int dim);
 

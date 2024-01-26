@@ -5,17 +5,25 @@ using namespace std;
 #include "Types.hpp"
 #include "utils.hpp"
 #include "LinearAlgebra.hpp"
-#include "MultilayerPerceptron.cpp"
+#include "MultilayerPerceptron.hpp"
 
-Encoder::Encoder(vector<int> networkSpecs,
-                 double initialBias,
-                 double initialWeightValue,
-                 double learningRate,
-                 int heads,
-                 int d_model)
+Encoder::Encoder(
+    double learningRate,
+    int heads,
+    int d_model,
+    vector<int> ffnNetworkSpecs)
 {
-  MultilayerPerceptron ffn = MultilayerPerceptron(networkSpecs, initialBias, initialWeightValue, learningRate, &sigmoid, &dSigmoid);
+  // Hyperparams
+  this->learningRate = learningRate;
+  this->heads = heads;
+  this->d_model = d_model;
+  this->ffnNetworkSpecs = ffnNetworkSpecs;
 
+  // Feed-Forward layer
+  // TODO: Give activation function to Encoder as argument
+  MultilayerPerceptron ffn = MultilayerPerceptron(ffnNetworkSpecs, 1, .5, this->learningRate, &sigmoid, &dSigmoid);
+
+  // Linear projectors for multihead-attention
   vector<vector<MultilayerPerceptron>> qkvLinears = vector<vector<MultilayerPerceptron>>(3, vector<MultilayerPerceptron>());
   for (int i = 0; i < 3; i++)
   {
@@ -25,6 +33,8 @@ Encoder::Encoder(vector<int> networkSpecs,
       qkvLinears[i].push_back(linear);
     }
   }
+
+  this->qkvLinears = qkvLinears;
 }
 
 vector<double> softmax(vector<double> input)
