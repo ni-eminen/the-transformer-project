@@ -8,9 +8,12 @@
 int main(int argc, char *argv[])
 {
     Encoder encoder = Encoder(
-        double learningRate,
-        int heads,
-        int d_model);
+        learningRate,
+        heads,
+        d_model,
+        ffnNetworkSpecs,
+        d_k,
+        d_v);
 
     return 0;
 }

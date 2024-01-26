@@ -11,7 +11,9 @@ Encoder::Encoder(
     double learningRate,
     int heads,
     int d_model,
-    vector<int> ffnNetworkSpecs)
+    vector<int> ffnNetworkSpecs,
+    int d_k,
+    int d_v)
 {
   // Hyperparams
   this->learningRate = learningRate;

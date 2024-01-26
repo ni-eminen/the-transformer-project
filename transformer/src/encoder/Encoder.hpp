@@ -19,6 +19,8 @@ public:
     int d_model;
     vector<vector<MultilayerPerceptron>> qkvLinears;
     vector<int> ffnNetworkSpecs;
+    int d_k;
+    int d_v;
 
     Encoder(
         double learningRate,
