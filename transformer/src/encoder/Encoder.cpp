@@ -20,6 +20,8 @@ Encoder::Encoder(
   this->heads = heads;
   this->d_model = d_model;
   this->ffnNetworkSpecs = ffnNetworkSpecs;
+  this->d_k = d_k;
+  this->d_v = d_v;
 
   // Feed-Forward layer
   // TODO: Give activation function to Encoder as argument

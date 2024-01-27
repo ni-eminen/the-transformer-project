@@ -12,15 +12,15 @@
 #include "Types.hpp"
 #include "stdlib.h"
 
-vector<vector<double> > generateInitialLayerWeights(int layerDimension, int nextLayerDimension)
+vector<vector<double>> generateInitialLayerWeights(int layerDimension, int nextLayerDimension)
 {
-    vector<vector<double> > weightsInitial(layerDimension, vector<double>());
+    vector<vector<double>> weightsInitial(layerDimension, vector<double>());
     for (int j = 0; j < weightsInitial.size(); j++)
     {
         for (int i = 0; i < nextLayerDimension; i++)
         {
             double r = ((double)rand() / (RAND_MAX));
-            r = (r + .25) / 1.6666; // Interpolation to .25 - .75
+            r = ((r + .25) / 1.6666) - 0.5; // Interpolation to .25 - .75
             weightsInitial[j].push_back(r);
         }
     }

@@ -37,8 +37,10 @@ int main(int argc, char *argv[])
             }
         }
         std::cout << "-----------" << std::endl;
-        printMatrix(mlp.weights[1], "first hidden layer: ");
-        printMatrix(mlp.weights[2], "output layer: ");
+        for (int l = 0; l < mlp.weights.size(); l++)
+        {
+            printMatrix(mlp.weights[l], "weights layer " + std::to_string(l) + ":");
+        }
         std::cout << std::endl;
         std::cout << "Epoch: " << i << std::endl;
         std::cout << "predictions: " << std::endl;
