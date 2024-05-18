@@ -24,6 +24,10 @@ double ReLU(double x);
 
 double dReLU(double x);
 
+double linear(double x);
+
+double dLinear(double x);
+
 double weightedSum(const std::vector<double> &weights, const std::vector<double> &inputs);
 
 vector<double> positionalEncoding(vector<double> v);

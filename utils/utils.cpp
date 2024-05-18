@@ -103,6 +103,16 @@ double dReLU(double x)
     return 0;
 }
 
+double linear(double x)
+{
+    return x;
+}
+
+double dLinear(double x)
+{
+    return 1;
+}
+
 double weightedSum(const std::vector<double> &weights, const std::vector<double> &inputs)
 {
     // Check for size mismatch
@@ -121,7 +131,7 @@ double weightedSum(const std::vector<double> &weights, const std::vector<double>
     return std::inner_product(weights.begin(), weights.end(), inputs.begin(), 0.0);
 }
 
-void printMatrix(const std::vector<std::vector<double> > &A, const std::string &title)
+void printMatrix(const std::vector<std::vector<double>> &A, const std::string &title)
 {
     std::cout << title << std::endl;
 
