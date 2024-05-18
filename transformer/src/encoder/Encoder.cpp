@@ -9,31 +9,44 @@ using namespace std;
 
 Encoder::Encoder(
     double learningRate,
-    int heads,
+    int headCount,
     int d_model,
     vector<int> ffnNetworkSpecs,
-    int d_k,
-    int d_v)
+    vector<int> mmhaFfnNetworkSpecs,
+    int heads) : learningRate(learningRate),
+                 headCount(headCount),
+                 d_model(d_model),
+                 ffnNetworkSpecs(ffnNetworkSpecs),
+                 mmhaFfnNetworkSpecs(mmhaFfnNetworkSpecs),
+                 blocks(5),
+                 ffn(ffnNetworkSpecs, 1, 0.5, learningRate, &sigmoid, &dSigmoid),
+                 mmhaFfn(mmhaFfnNetworkSpecs, 1, 0.5, learningRate, &linear, &dLinear)
 {
   // Hyperparams
-  this->learningRate = learningRate;
   this->heads = heads;
+  this->learningRate = learningRate;
+  this->headCount = headCount;
   this->d_model = d_model;
   this->ffnNetworkSpecs = ffnNetworkSpecs;
-  this->d_k = d_k;
-  this->d_v = d_v;
+  this->mmhaFfnNetworkSpecs = mmhaFfnNetworkSpecs;
+  this->blocks = 5;
+  int initialBias = 0;
+  double initialWeightValue = 0.5;
 
   // Feed-Forward layer
   // TODO: Give activation function to Encoder as argument
   MultilayerPerceptron ffn = MultilayerPerceptron(ffnNetworkSpecs, 1, .5, this->learningRate, &sigmoid, &dSigmoid);
+  this->ffn = ffn;
+  MultilayerPerceptron mmhaFfn = MultilayerPerceptron(mmhaFfnNetworkSpecs, 1, .5, this->learningRate, &linear, &dLinear);
+  this->mmhaFfn = mmhaFfn;
 
   // Linear projectors for multihead-attention
   vector<vector<MultilayerPerceptron>> qkvLinears = vector<vector<MultilayerPerceptron>>(3, vector<MultilayerPerceptron>());
   for (int i = 0; i < 3; i++)
   {
-    for (int h = 0; h < heads; h++)
+    for (int h = 0; h < headCount; h++)
     {
-      MultilayerPerceptron linear = MultilayerPerceptron(networkSpecs, initialBias, initialWeightValue, learningRate, &sigmoid, &dSigmoid);
+      MultilayerPerceptron linear = MultilayerPerceptron(ffnNetworkSpecs, initialBias, initialWeightValue, learningRate, &sigmoid, &dSigmoid);
       qkvLinears[i].push_back(linear);
     }
   }
@@ -66,53 +79,62 @@ vector<vector<double>> softmax(vector<vector<double>> input)
   return result;
 }
 
-vector<vector<double>> scaledDotProductAttention(vector<vector<double>> K, vector<vector<double>> Q, vector<vector<double>> V, int dim)
+vector<vector<double>> Encoder::scaledDotProductAttention(vector<vector<double>> K, vector<vector<double>> Q, vector<vector<double>> V, int dim)
 {
   vector<vector<double>> QK = matMul(Q, K);
   vector<vector<double>> QK_t = transpose(QK);
   vector<vector<double>> scaled_QK_t = scalarMultiplyMatrix((1 / dim), QK_t);
+
   return matMul(softmax(scaled_QK_t), V);
 }
 
-double multiHeadAttention(vector<double> K, vector<double> Q, vector<double> V)
+vector<double> Encoder::multiHeadAttention(vector<double> K, vector<double> Q, vector<double> V)
 {
-  vector<vector<double>> heads_;
+  vector<vector<double>> concatenated(0);
   // Project through linear
   for (int h = 0; h < this->heads; h++)
   {
     vector<vector<double>> QW = this->qkvLinears[h][0].forward(Q);
     vector<vector<double>> KW = this->qkvLinears[h][1].forward(K);
     vector<vector<double>> VW = this->qkvLinears[h][2].forward(V);
-    heads_.push_back(scaledDotProductAttention(K, Q, V));
+
+    // Give projections to sdpa
+    vector<vector<double>> sdpaOut = scaledDotProductAttention(KW, QW, VW, this->d_model);
+
+    // concatenate sdpa outputs
+    concatenated.insert(concatenated.end(), sdpaOut.begin(), sdpaOut.end());
   }
-  // Give projections to sdpa
-  // concatenate
+
   // return Projection of concatenation through linear layer
 
-  return 0.0;
+  return this->ffn.forward(concatenated);
 }
 
-double maskedMultiHeadAttention(vector<double> K, vector<double> Q, vector<double> V)
-{
-  return 0.0;
-}
-
-vector<double> addAndNorm(vector<double> v1, vector<double> v2)
+vector<double> Encoder::addAndNorm(vector<double> v1, vector<double> v2)
 {
   return vectorNormalization(vectorAddition(v1, v2));
 }
 
-vector<double> forward(vector<double> inputs)
+// TODO: Implement Blocks
+vector<double> Encoder::forward(vector<double> x)
 {
-  return vector<double>();
+  vector<double> skip = x;
+  vector<double> mmhaOut = multiHeadAttention(x, x, x);
+  vector<double> addNorm = addAndNorm(mmhaOut, skip);
+
+  skip = addNorm;
+  vector<double> ffnOut = this->mmhaFfn.forward(addNorm);
+  addNorm = addAndNorm(ffnOut, skip);
+
+  return addNorm;
 }
 
-void train(vector<double> x, vector<double> y)
+void Encoder::train(vector<double> x, vector<double> y)
 {
   return;
 }
 
-double lossFunction(vector<double> y, vector<double> y_pred)
+double Encoder::lossFunction(vector<double> y, vector<double> y_pred)
 {
   return 1.;
 }
