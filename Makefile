@@ -33,9 +33,9 @@ encoder:
 	g++ -I ./utils -g -c ${UTILS}/LinearAlgebra.cpp
 	g++ -I ./utils -g -c ${MLP_SRC}/MultilayerPerceptron.cpp
 	g++ -I ./utils -I ./multilayer-perceptron/src -g -c ${ENCODER_SRC}/Encoder.cpp
-	g++ -I ./utils -g -c ${UTILS}/utils.cpp
-	g++ -I ./utils -g -c ${ENCODER_SRC}/main.cpp
-	g++ -I ./utils -o ${ENCODER_X} -g main.o utils.o MultilayerPerceptron.o LinearAlgebra.o
+	g++ -I ./utils -I ./multilayer-perceptron/src -g -c ${UTILS}/utils.cpp
+	g++ -I ./utils -I ./multilayer-perceptron/src -g -c ${ENCODER_SRC}/main.cpp
+	g++ -I ./utils -I ./multilayer-perceptron/src -o ${ENCODER_X} -g main.o utils.o MultilayerPerceptron.o LinearAlgebra.o
 	${ENCODER_X}
 
 tutils:
