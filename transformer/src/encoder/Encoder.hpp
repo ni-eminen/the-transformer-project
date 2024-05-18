@@ -15,25 +15,31 @@ class Encoder
 {
 public:
     double learningRate;
-    int heads;
+    int headCount;
     int d_model;
+    int heads;
     vector<vector<MultilayerPerceptron>> qkvLinears;
     vector<int> ffnNetworkSpecs;
+    vector<int> mmhaFfnNetworkSpecs;
     int d_k;
     int d_v;
+    MultilayerPerceptron ffn;
+    MultilayerPerceptron mmhaFfn;
+    int blocks;
 
     Encoder(
         double learningRate,
-        int heads,
-        int d_model);
+        int headCount,
+        int d_model,
+        vector<int> ffnNetworkSpecs,
+        vector<int> mmhaFfnNetworkSpecs,
+        int heads);
 
-    vector<double> scaledDotProductAttention(vector<vector<double>> K, vector<vector<double>> Q, vector<vector<double>> V, int dim);
+    vector<vector<double>> scaledDotProductAttention(vector<vector<double>> K, vector<vector<double>> Q, vector<vector<double>> V, int dim);
 
-    double multiHeadAttention(vector<double> K, vector<double> Q, vector<double> V);
+    vector<double> multiHeadAttention(vector<double> K, vector<double> Q, vector<double> V);
 
-    double maskedMultiHeadAttention(vector<double> K, vector<double> Q, vector<double> V);
-
-    vector<double> addAndNorm(vector<vector<double>> V);
+    vector<double> addAndNorm(vector<double> v1, vector<double> v2);
 
     vector<double> forward(vector<double> inputs);
 
