@@ -13,8 +13,6 @@ vector<vector<double> > matMul(vector<vector<double> > A, vector<vector<double> 
 {
     if (A[0].size() != B.size())
     {
-        printMatrix(A, "A");
-        printMatrix(B, "B");
         throw std::invalid_argument("Columns of A and rows of B must be equal.");
     }
 

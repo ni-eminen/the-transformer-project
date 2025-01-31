@@ -1,13 +1,14 @@
 using namespace std;
 #include <string>
+#include <cmath>
 #include <bits/stdc++.h>
-#include "Encoder.hpp"
+#include "Decoder.hpp"
 #include "Types.hpp"
 #include "utils.hpp"
 #include "LinearAlgebra.hpp"
 #include "MultilayerPerceptron.hpp"
 
-Encoder::Encoder(
+Decoder::Decoder(
     double learningRate,
     int headCount,
     int d_model,
@@ -34,7 +35,7 @@ Encoder::Encoder(
   double initialWeightValue = 0.5;
 
   // Feed-Forward layer
-  // TODO: Give activation function to Encoder as argument
+  // TODO: Give activation function to Decoder as argument
   MultilayerPerceptron ffn = MultilayerPerceptron(ffnNetworkSpecs, 1, .5, this->learningRate, &sigmoid, &dSigmoid);
   this->ffn = ffn;
   MultilayerPerceptron mmhaFfn = MultilayerPerceptron(mmhaFfnNetworkSpecs, 1, .5, this->learningRate, &linear, &dLinear);
@@ -79,18 +80,42 @@ vector<vector<double>> softmax(vector<vector<double>> input)
   return result;
 }
 
-vector<vector<double>> Encoder::scaledDotProductAttention(vector<vector<double>> K, vector<vector<double>> Q, vector<vector<double>> V, int dim)
+void Decoder::mask(vector<vector<double>> &A)
 {
-  vector<vector<double>> QK = matMul(Q, K);
-  vector<vector<double>> QK_t = transpose(QK);
-  vector<vector<double>> scaled_QK_t = scalarMultiplyMatrix((1 / dim), QK_t);
-
-  return matMul(softmax(scaled_QK_t), V);
+  int i = 0;
+  for (vector<double> &v : A)
+  {
+    if (v.size() > i + 1)
+    {
+      fill(v.begin() + i + 1, v.end(), 0);
+    }
+  }
 }
 
-vector<double> Encoder::multiHeadAttention(vector<double> K, vector<double> Q, vector<double> V)
+vector<vector<double>> Decoder::scaledDotProductAttention(
+    const vector<vector<double>> &K,
+    const vector<vector<double>> &Q,
+    const vector<vector<double>> &V,
+    int dim,
+    bool mask)
+{
+  vector<vector<double>> QK = matMul(Q, transpose(K));
+  double sqrt_dk = std::sqrt(dim);
+  vector<vector<double>> scaled = scalarMultiplyMatrix(1 / sqrt_dk, QK);
+
+  if (mask)
+  {
+  }
+
+  vector<vector<double>> smax = softmax(scaled);
+
+  return matMul(smax, V);
+}
+
+vector<double> Decoder::multiHeadAttention(const vector<double> &K, const vector<double> &Q, const vector<double> &V, bool mask)
 {
   vector<vector<double>> concatenated(0);
+
   // Project through linear
   for (int h = 0; h < this->heads; h++)
   {
@@ -110,13 +135,13 @@ vector<double> Encoder::multiHeadAttention(vector<double> K, vector<double> Q, v
   return this->ffn.forward(concatenated);
 }
 
-vector<double> Encoder::addAndNorm(vector<double> v1, vector<double> v2)
+vector<double> Decoder::addAndNorm(vector<double> v1, vector<double> v2)
 {
   return vectorNormalization(vectorAddition(v1, v2));
 }
 
 // TODO: Implement Blocks
-vector<double> Encoder::forward(vector<double> x)
+vector<double> Decoder::forward(vector<double> x)
 {
   vector<double> skip = x;
   vector<double> mmhaOut = multiHeadAttention(x, x, x);
@@ -129,12 +154,21 @@ vector<double> Encoder::forward(vector<double> x)
   return addNorm;
 }
 
-void Encoder::train(vector<double> x, vector<double> y)
+void Decoder::train(vector<double> x, vector<double> y)
 {
   return;
 }
 
-double Encoder::lossFunction(vector<double> y, vector<double> y_pred)
+double Decoder::lossFunction(vector<double> y, vector<double> y_pred)
 {
   return 1.;
+}
+
+int main()
+{
+  vector<vector<double>> A(10, vector<double>(10, 1));
+
+  printMatrix(A);
+
+  return 0;
 }

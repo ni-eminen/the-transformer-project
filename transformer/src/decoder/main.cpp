@@ -1,7 +1,7 @@
 
 #include <vector>
 #include <iomanip>
-#include "Encoder.hpp"
+#include "Decoder.hpp"
 #include "utils.hpp"
 #include "Types.hpp"
 
@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
     int d_k = 10;
     int d_v = 10;
 
-    Encoder encoder = Encoder(
+    Decoder decoder = Decoder(
         learningRate,
         heads,
         d_model,
